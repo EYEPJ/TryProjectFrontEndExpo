@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button,View,Alert } from 'react-native';
-import FBLoginButton from '../Components/FBLoginButton';
 import { Facebook } from 'expo';
 
 class Index extends React.Component {

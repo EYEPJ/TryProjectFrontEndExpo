@@ -6,7 +6,6 @@ import FemaleShapeScreen from './Screen/FemaleShapeScreen';
 import IndexScreen from './Screen/IndexScreen';
 import SelectShapeOptionScreen from './Screen/SelectShapeOptionScreen';
 import ShapeScreen from './Screen/ShapeScreen';
-import FBLoginButton from './Components/FBLoginButton';
 
 const MainNavigator = createStackNavigator({
   //Profile: {screen: ProfileScreen},
