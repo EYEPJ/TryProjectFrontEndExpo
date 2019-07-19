@@ -78,6 +78,11 @@ const styles = StyleSheet.create({
       height:'100%',
       borderRadius: 10,    
   },
+  styleButton:{
+    flex:1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+ },
   genderContainer:{
    height:250,
    width:170,
