@@ -1,14 +1,19 @@
 import {createStackNavigator, createAppContainer} from 'react-navigation';
-import HomeScreen from './Screen/HomeScreen' ;
 import ProfileScreen from './Screen/ProfileScreen' ;
 import SelectGenderScreen from './Screen/SelectGenderScreen';
 import MaleShapeScreen from './Screen/MaleShapeScreen';
 import FemaleShapeScreen from './Screen/FemaleShapeScreen';
+import IndexScreen from './Screen/IndexScreen';
+import SelectShapeOptionScreen from './Screen/SelectShapeOptionScreen';
+import ShapeScreen from './Screen/ShapeScreen';
+import FBLoginButton from './Components/FBLoginButton';
 
 const MainNavigator = createStackNavigator({
-  Home: {screen: HomeScreen},
-  Profile: {screen: ProfileScreen},
-  Gender:{screen: SelectGenderScreen},
+  //Profile: {screen: ProfileScreen},
+  Index: {screen: IndexScreen},
+  Gender: {screen: SelectGenderScreen},
+  Shape: {screen: SelectShapeOptionScreen},
+  SelectShape: {screen: ShapeScreen},
   MaleShape:{screen: MaleShapeScreen},
   FemaleShape :{screen: FemaleShapeScreen},
 });

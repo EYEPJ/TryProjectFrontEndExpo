@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
       borderRadius: 10,
       flexDirection: 'row',
       flexWrap:'wrap'
-
   },
 }
 );
