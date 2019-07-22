@@ -1,11 +1,27 @@
 import React from 'react';
-import { Button,View,Alert } from 'react-native';
+import { Button,View,Alert,Text } from 'react-native';
 import { Facebook } from 'expo';
+import axios from 'axios';
 
 class Index extends React.Component {
-  // static navigationOptions = {
-  //   title: 'สวัสดี',
-  // }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {
+
+      },
+    };
+  }
+
+  checkUserIsExist = async (fbId) => {
+    resp = await axios.post('http://localhost:8000/checkUserIsExist/',{
+      fbId: fbId
+    });
+    //console.log(resp.data)
+    return await resp.data.result
+    
+  }
 
   logIn = async () => {
     try {
@@ -16,9 +32,32 @@ class Index extends React.Component {
         permissions: ['public_profile'],
       });
       if (type === 'success') {
-        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-        Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
-        this.props.navigation.navigate('SelectShape');
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}&fields=id,name,picture.type(large),gender`);
+        //Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+        //console.log((await response.json()));
+        const userInfo = await response.json();
+        this.setState(
+          {
+            user:{
+              fbId: userInfo.id,
+              name: userInfo.name,
+              profilePic: userInfo.picture.data.url,
+              gender: userInfo.gender,
+            }
+          }
+        )
+        //checkVar = await this.checkUserIsExist('userInfo.id')
+        //console.log(await this.checkUserIsExist('userInfo.id').result)
+        if(await this.checkUserIsExist(userInfo.id)){
+          this.props.navigation.navigate('Profile', {
+            user: this.state.user
+          });
+        } else{
+          this.props.navigation.navigate('SelectShape', {
+            user: this.state.user
+          });
+        }
       } else {
         Alert.alert('Something is wrong !');
       }
