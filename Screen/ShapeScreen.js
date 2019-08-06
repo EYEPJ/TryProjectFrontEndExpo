@@ -38,6 +38,7 @@ class MaleShapeScreen extends React.Component {
         resp = await axios.get('http://3.92.192.76:8000/womanShape/')
       }  
       console.log('shape is serving....')
+      console.log(resp.data)
       let data = resp.data.map(value => {
         return value
       })
@@ -53,7 +54,7 @@ class MaleShapeScreen extends React.Component {
   
     render() {
       const {navigate} = this.props.navigation;
-      // console.log('test' , this.state.data)
+      // console.log('test' , this.state.data) 
     return(
       <ScrollView>
       <ImageBackground

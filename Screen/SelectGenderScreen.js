@@ -19,12 +19,12 @@ class SelectGenderScreen extends React.Component {
        <Text style={styles.header}>Select Your Genger</Text>
        </View>
        <View style={styles.styleButton}> 
-       <TouchableOpacity style={styles.genderContainer} onPress={() => navigate('Profile', {name: 'Jane'})}>
+       <TouchableOpacity style={styles.genderContainer} onPress={() => navigate('Profile')}>
             <Image 
             source={require('../Image/female.png')}
             style={styles.imageStyle}/>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.genderContainer} onPress={() => navigate('Profile', {name: 'Jane'})}>
+        <TouchableOpacity style={styles.genderContainer} onPress={() => navigate('Profile')}>
             <Image
             source={require('../Image/male.png') }
             style={styles.imageStyle}/>
