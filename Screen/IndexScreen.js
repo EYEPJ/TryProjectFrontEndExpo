@@ -15,7 +15,7 @@ class Index extends React.Component {
   }
 
   checkUserIsExist = async (fbId) => {
-    resp = await axios.post('http://localhost:8000/checkUserIsExist/',{
+    resp = await axios.post('http://3.92.192.76:8000/checkUserIsExist/',{
       fbId: fbId
     });
     //console.log(resp.data)
@@ -32,11 +32,12 @@ class Index extends React.Component {
         permissions: ['public_profile'],
       });
       if (type === 'success') {
-        const response = await fetch(
-          `https://graph.facebook.com/me?access_token=${token}&fields=id,name,picture.type(large),gender`);
+        console.log('Test')
+        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,picture.type(large),gender`);
         //Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
         //console.log((await response.json()));
         const userInfo = await response.json();
+        console.log(userInfo)
         this.setState(
           {
             user:{
@@ -47,8 +48,10 @@ class Index extends React.Component {
             }
           }
         )
+        
         //checkVar = await this.checkUserIsExist('userInfo.id')
         //console.log(await this.checkUserIsExist('userInfo.id').result)
+        console.log(userInfo.id)
         if(await this.checkUserIsExist(userInfo.id)){
           this.props.navigation.navigate('Profile', {
             user: this.state.user
