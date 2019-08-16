@@ -9,7 +9,6 @@ import SkinColorScreen from './Screen/SkinColorScreen';
 const MainNavigator = createStackNavigator({
   Index: {screen: IndexScreen},
   Gender: {screen: SelectGenderScreen},
-  Shape: {screen: SelectShapeOptionScreen},
   SelectShape: {screen: ShapeScreen},
   Profile: {screen: ProfileScreen},
   SelectSkin: {screen: SkinColorScreen}

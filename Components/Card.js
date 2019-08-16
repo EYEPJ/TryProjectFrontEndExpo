@@ -17,6 +17,8 @@ const Card = props => {
 </Container>
 }
 
+
+
 export default Card;
 const Container = styled.View`
 	background: #ffffff;
@@ -34,15 +36,20 @@ const Cover = styled.View`
 	height: 120px;
 	border-top-left-radius: 14px;
 	border-top-right-radius: 14px;
-	overflow: hidden;
+	
 `;
 
 const Image = styled.Image`
-	width: 100%;
-	height: 100%;
+	
+	width: 55%;
+	height: 120%;
+	justify-content: center;
 `;
 const Content = styled.Text`
 	color: #ACACAC;
 	font-size: 15px;
 	font-weight: 600;
+	text-align: center;
+	
+
 `;

@@ -78,7 +78,7 @@ export default class ProfileScreen extends React.Component {
           </TouchableOpacity>
 
           <Gestures rotatable={true} scalable={true}>
-            <Image source={{uri: this.state.top_in}} style={{width: '30%', height: '30%'}}/>
+            <Image source={{uri: this.state.top_in}} style={{width: '50%', height: '50%'}}/>
           </Gestures>
           
           

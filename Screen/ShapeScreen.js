@@ -14,7 +14,7 @@ import ProfileScreen from './ProfileScreen';
 
 class MaleShapeScreen extends React.Component {
     static navigationOptions = {
-      title: 'Male',
+      title: 'Select Your Shape',
     };
     state = {
       data: [],

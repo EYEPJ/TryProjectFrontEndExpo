@@ -9,7 +9,9 @@ import {
 
 
 class SelectGenderScreen extends React.Component {
-  static navigationOptions = {};
+  static navigationOptions = {
+    title:'Welcome PJ'
+  };
   render() {
     const {navigate} = this.props.navigation;
    return(
@@ -19,12 +21,20 @@ class SelectGenderScreen extends React.Component {
        <Text style={styles.header}>Select Your Genger</Text>
        </View>
        <View style={styles.styleButton}> 
-       <TouchableOpacity style={styles.genderContainer} onPress={() => navigate('Profile')}>
+       <TouchableOpacity style={styles.genderContainer} onPress={() => navigate('SelectShape' , {
+            user: {
+              gender:'เพศหญิง'
+            }
+          })}>
             <Image 
             source={require('../Image/female.png')}
             style={styles.imageStyle}/>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.genderContainer} onPress={() => navigate('Profile')}>
+        <TouchableOpacity style={styles.genderContainer} onPress={() => navigate('SelectShape' , {
+            user: {
+              gender:'เพศชาย'
+            }
+          })}>
             <Image
             source={require('../Image/male.png') }
             style={styles.imageStyle}/>

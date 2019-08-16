@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button,View,Alert,Text } from 'react-native';
+import { Button,View,Alert,Text,ImageBackground,StyleSheet} from 'react-native';
 import { Facebook } from 'expo';
 import axios from 'axios';
 
@@ -28,7 +28,7 @@ class Index extends React.Component {
       const {
         type,
         token,
-      } = await Facebook.logInWithReadPermissionsAsync('2859742107375302', {
+      } = await Facebook.logInWithReadPermissionsAsync('1302334243253331', {
         permissions: ['public_profile'],
       });
       if (type === 'success') {
@@ -72,12 +72,25 @@ class Index extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
     return (
+      <ImageBackground
+      source={require('../Image/loginscreen.png')}
+      style={styles.ImageBackgroundStyle}>
       <View>
         <Button title="Sign in with Facebook" onPress={this.logIn}/>
         <Button title="Guest Mode" onPress={() => navigate('Gender')}/>
       </View>
+      </ImageBackground>
     );
   }
 }
 
 export default Index
+
+const styles = StyleSheet.create({
+
+  ImageBackgroundStyle:{
+      width: '100%',
+      
+      height: '100%'
+  }
+});
