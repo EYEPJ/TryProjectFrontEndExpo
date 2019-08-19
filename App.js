@@ -5,13 +5,17 @@ import IndexScreen from './Screen/IndexScreen';
 import SelectShapeOptionScreen from './Screen/SelectShapeOptionScreen';
 import ShapeScreen from './Screen/ShapeScreen';
 import SkinColorScreen from './Screen/SkinColorScreen';
+import CameraScreen from './Screen/CameraScreen';
+
 
 const MainNavigator = createStackNavigator({
   Index: {screen: IndexScreen},
   Gender: {screen: SelectGenderScreen},
+  Shape: {screen: SelectShapeOptionScreen},
   SelectShape: {screen: ShapeScreen},
-  Profile: {screen: ProfileScreen},
-  SelectSkin: {screen: SkinColorScreen}
+  Profile: {screen: ProfileScreen}, 
+  SelectSkin: {screen: SkinColorScreen},
+  Camera:{screen:CameraScreen}
 });
 
 const App = createAppContainer(MainNavigator);

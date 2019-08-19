@@ -11,8 +11,10 @@ import {
  ScrollView
 } from 'react-native';
 import ProfileScreen from './ProfileScreen';
+import {FontAwesome,Feather} from '@expo/vector-icons'
+import CameraScreen from './CameraScreen';
 
-class MaleShapeScreen extends React.Component {
+class ShapeScreen extends React.Component {
     static navigationOptions = {
       title: 'Select Your Shape',
     };
@@ -53,15 +55,21 @@ class MaleShapeScreen extends React.Component {
     }
   
     render() {
-      const {navigate} = this.props.navigation;
+      const {navigate} = this.props.navigation; 
       // console.log('test' , this.state.data) 
     return(
       <ScrollView>
       <ImageBackground
       source={require('../Image/bg.png')}
       style={styles.ImageBackgroundStyle}>
-      <Text style={styles.header}>Select Your Shape </Text>
+
       <View style={styles.container}>
+      <TouchableOpacity onPress={() => navigate('Camera')}>
+                <Card style={styles.cardStyle}>
+                <Feather name="camera" size={50} color={'#333'}/> 
+                <Text style={{textAlign:'center',color:'#ACACAC'}}>Analyze Your Body</Text>
+                </Card>
+              </TouchableOpacity>
         {
           this.state.data.map((v,index) => {
             return (
@@ -83,7 +91,7 @@ class MaleShapeScreen extends React.Component {
     }
 }
 
-export default MaleShapeScreen
+export default ShapeScreen
 
 const styles = StyleSheet.create({
   ImageBackgroundStyle: {
