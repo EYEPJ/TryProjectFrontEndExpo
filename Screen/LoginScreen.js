@@ -10,7 +10,7 @@ import Botton from 'react-native-button';
 
 class LoginScreen extends React.Component {
     static navigationOptions = {
-      title: 'Welcome PJ',
+      title: '',
     };
     render() {
       const {navigate} = this.props.navigation;

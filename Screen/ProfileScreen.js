@@ -16,8 +16,16 @@ export default class ProfileScreen extends React.Component {
         top_in: "",
         top_out: "",
         buttom: "",
-        shoe: ""
+        shoe: "",
+        image:""
     };
+  }
+
+  componentDidMount(){
+    let recievImage = this.props.navigation.getParam('imageUri','non')
+    this.setState({
+      image: recievImage
+    })
   }
 
   ShowModalFunction(visible) {
@@ -56,6 +64,10 @@ export default class ProfileScreen extends React.Component {
                       this.ShowModalFunction(!this.state.ModalVisibleStatus)
                       this.setState({top_in: v.clothePictureUrl})
                     }}>
+                    
+                    <View style={styles.imageStyle}>
+                      <Image source={{uri:this.state.image}}/>
+                    </View>
                     <View style={styles.item} >
                       <Image style={{width: 80, height: 100}} source={{uri : v.clothePictureUrl}}></Image>
                     </View>
@@ -146,6 +158,11 @@ item: {
   marginBottom:10, 
   marginLeft:10, 
   justifyContent: 'center',
+  alignItems: 'center'
+},
+imageStyle:{
+  width: '100%',
+  height:'250',
   alignItems: 'center'
 }
 });

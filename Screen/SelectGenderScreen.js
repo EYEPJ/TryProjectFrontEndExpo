@@ -10,7 +10,7 @@ import {
 
 class SelectGenderScreen extends React.Component {
   static navigationOptions = {
-    title:'Welcome PJ'
+    title:'Select Your Gender'
   };
   render() {
     const {navigate} = this.props.navigation;
@@ -18,7 +18,6 @@ class SelectGenderScreen extends React.Component {
 
      <View style={styles.Container}>
      <View style={styles.top}>
-       <Text style={styles.header}>Select Your Genger</Text>
        </View>
        <View style={styles.styleButton}> 
        <TouchableOpacity style={styles.genderContainer} onPress={() => navigate('SelectShape' , {
@@ -55,7 +54,7 @@ const styles = StyleSheet.create({
   top:{
     alignItems:'center',
     marginBottom:30,
-    marginTop:50
+    marginTop:200
   },
   header:{
     fontSize: 23,
@@ -100,6 +99,7 @@ const styles = StyleSheet.create({
    marginRight:15
    
   }
+  
     
 
 

@@ -15,7 +15,8 @@ const MainNavigator = createStackNavigator({
   SelectShape: {screen: ShapeScreen},
   Profile: {screen: ProfileScreen}, 
   SelectSkin: {screen: SkinColorScreen},
-  Camera:{screen:CameraScreen}
+  Camera:{screen:CameraScreen},
+  Test:{screen:TestScreen}
 });
 
 const App = createAppContainer(MainNavigator);
