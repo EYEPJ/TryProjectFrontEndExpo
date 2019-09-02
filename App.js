@@ -18,10 +18,6 @@ const MainNavigator = createStackNavigator({
   Profile: {screen: ProfileScreen}, 
   SelectSkin: {screen: SkinColorScreen},
   Camera:{screen:CameraScreen},
-<<<<<<< Updated upstream
-  Test:{screen:TestScreen}
-=======
->>>>>>> Stashed changes
 });
 
 const App = createAppContainer(MainNavigator);

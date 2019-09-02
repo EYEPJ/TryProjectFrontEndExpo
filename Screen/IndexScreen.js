@@ -165,6 +165,7 @@ text:{
     height: 25,
     width: 25,
     resizeMode: 'stretch',
+    
   },
   TextStyle: {
     color: '#fff',
