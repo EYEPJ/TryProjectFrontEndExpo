@@ -1,10 +1,14 @@
 import React from 'react';
-import { Button,View,Alert,Text,ImageBackground,StyleSheet} from 'react-native';
+import { Text,View,Alert,ImageBackground,StyleSheet,TouchableOpacity,Image} from 'react-native';
 import { Facebook } from 'expo';
 import axios from 'axios';
 
-
 class Index extends React.Component {
+
+  static navigationOptions = {
+    //To hide the ActionBar/NavigationBar
+    header: null,
+};
 
   constructor(props) {
     super(props);
@@ -76,11 +80,28 @@ class Index extends React.Component {
       <ImageBackground
       source={require('../Image/loginscreen.png')}
       style={styles.ImageBackgroundStyle}>
+      <View style={styles.container}>
+        <Text style={styles.logoStyles}> TRY </Text>
+        <View style = {styles.lineStyle} />
+        <Text style={styles.text}>Virtual Fitting Room</Text>
       <View>
-        <Button title="Sign in with Facebook" onPress={this.logIn}/>
-        <Button title="Guest Mode" onPress={() => navigate('Gender')}/>
+      <TouchableOpacity style={styles.FacebookStyle} activeOpacity={0.5} onPress={this.logIn}>
+      <Image
+            source={{
+              uri:
+                'https://aboutreact.com/wp-content/uploads/2018/08/facebook.png.png',
+            }}
+            style={styles.ImageIconStyle}/>
+          <View style={styles.SeparatorLine} />
+          <Text style={styles.TextStyle}> Login Using Facebook </Text>
+        </TouchableOpacity>
+      <TouchableOpacity style={styles.GuestStyle} onPress={() => navigate('Gender')}>
+          <Text style={styles.TextGusetStyle}> Login With Guest Mode </Text>
+        </TouchableOpacity>
+        
       </View>
-      </ImageBackground>
+      </View>
+      </ImageBackground> 
     );
   }
 }
@@ -88,9 +109,89 @@ class Index extends React.Component {
 export default Index
 
 const styles = StyleSheet.create({
-
-  ImageBackgroundStyle:{
+  ImageBackgroundStyle: {
       width: '100%',
+      marginTop: 0,
       height: '100%'
-  }
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 50,
+    marginTop:200,
+    marginBottom:200,
+    borderRadius: 10,
+
+},
+logoStyles:{
+    fontSize:50,
+    fontWeight:'500',
+    color:'#fff'
+},
+lineStyle:{
+  backgroundColor: '#fff',
+    width: 58,
+    height: 1,
+    margin: 2
+  
+},
+text:{
+  color:'#fff',
+  margin:5
+},
+  imageStyle:{
+    width: '120%',
+      height: '50%'
+  },
+  FacebookStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#485a96',
+    borderWidth: 0.5,
+    borderColor: '#fff',
+    height: 40,
+    width: 220,
+    borderRadius: 5,
+    margin: 5,
+    marginBottom:30,
+    marginTop:30
+
+  },
+  ImageIconStyle: {
+    padding: 10,
+    margin: 5,
+    marginLeft:10,
+    height: 25,
+    width: 25,
+    resizeMode: 'stretch',
+  },
+  TextStyle: {
+    color: '#fff',
+    marginBottom: 4,
+    marginLeft: 10,
+    textAlign:'center'  
+  },
+  TextGusetStyle: {
+    color: '#fff',
+    marginLeft: 30,
+    textAlign:'center'  
+  },
+  SeparatorLine: {
+    backgroundColor: '#fff',
+    width: 1,
+    height: 40,
+    margin: 2
+  },
+  GuestStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#dc4e41',
+    borderWidth: 0.5,
+    borderColor: '#fff',
+    height: 40,
+    width: 220,
+    borderRadius: 5,
+    margin: 5,
+  },
 });
