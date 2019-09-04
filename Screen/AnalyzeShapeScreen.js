@@ -113,7 +113,11 @@ class MyClass extends Component {
             hip: this.state.hipB.leftPosition-this.state.hipA.leftPosition,
             leg: this.state.legB.leftPosition-this.state.legA.leftPosition
         }).then(res => {
-            console.log(res.data);
+            this.state.user.shape = res.data;
+            this.props.navigation.navigate('SelectSkin', {
+                user: this.state.user
+            });
+            console.log(this.state.user)
         })
     }
 
@@ -252,10 +256,7 @@ class MyClass extends Component {
     render() {
         return (
             <View>
-            <Button title="Press Me" onPress={() => {
-                this.analyzeShape
-
-                }}/>
+            <Button title="Press Me" onPress={this.analyzeShape}/>
                 <View>
                     <Svg height="100%" width="100%">
                         <Line x1={this.state.shoulderA.leftPosition} 

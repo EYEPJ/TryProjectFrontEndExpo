@@ -4,7 +4,6 @@ import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
 import { Ionicons,Feather} from '@expo/vector-icons'
 import {Thumbnail } from  'native-base';
-import * as firebase from 'firebase';
 import ApiKeys from '../Screen/ApiKeys';
 
 export default class CameraExample extends React.Component {

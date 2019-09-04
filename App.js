@@ -10,7 +10,6 @@ import AnalyzeShapeScreen from './Screen/AnalyzeShapeScreen';
 
 
 const MainNavigator = createStackNavigator({
-  AnalyzeShapeScreen: {screen: AnalyzeShapeScreen},
   Index: {screen: IndexScreen},
   Gender: {screen: SelectGenderScreen},
   Shape: {screen: SelectShapeOptionScreen},
@@ -18,10 +17,7 @@ const MainNavigator = createStackNavigator({
   Profile: {screen: ProfileScreen}, 
   SelectSkin: {screen: SkinColorScreen},
   Camera:{screen:CameraScreen},
-<<<<<<< Updated upstream
-  Test:{screen:TestScreen}
-=======
->>>>>>> Stashed changes
+  AnalyzeShapeScreen: {screen: AnalyzeShapeScreen},
 });
 
 const App = createAppContainer(MainNavigator);

@@ -33,7 +33,7 @@ class MaleShapeScreen extends React.Component {
   
     getShape = async () => {
       let resp
-      if(this.state.user.gender === 'เพศชาย'){
+      if(this.state.user.gender === 'male'){
         resp = await axios.get('http://3.92.192.76:8000/menShape/')
       }else{
         resp = await axios.get('http://3.92.192.76:8000/womanShape/')
@@ -44,6 +44,7 @@ class MaleShapeScreen extends React.Component {
         return value
       })
       console.log('test', data)
+      console.log(this.state.user)
       this.setState({ data })
     }
 
@@ -62,7 +63,9 @@ class MaleShapeScreen extends React.Component {
       source={require('../Image/bg.png')}
       style={styles.ImageBackgroundStyle}>
       <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigate('Camera')}>
+      <TouchableOpacity onPress={() => navigate('AnalyzeShapeScreen', {
+            user: this.state.user
+          })}>
                 <Card style={styles.cardStyle} >
                 </Card>
               </TouchableOpacity>

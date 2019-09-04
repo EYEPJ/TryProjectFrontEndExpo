@@ -39,8 +39,6 @@ class Index extends React.Component {
       if (type === 'success') {
         console.log('Test')
         const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,picture.type(large),gender`);
-        //Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
-        //console.log((await response.json()));
         const userInfo = await response.json();
         console.log(userInfo)
         this.setState(
@@ -49,7 +47,6 @@ class Index extends React.Component {
               fbId: userInfo.id,
               name: userInfo.name,
               profilePic: userInfo.picture.data.url,
-              gender: userInfo.gender,
             }
           }
         )
@@ -62,7 +59,7 @@ class Index extends React.Component {
             user: this.state.user
           });
         } else{
-          this.props.navigation.navigate('SelectShape', {
+          this.props.navigation.navigate('Gender', {
             user: this.state.user
           });
         }
