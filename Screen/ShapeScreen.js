@@ -11,9 +11,10 @@ import {
  ScrollView
 } from 'react-native';
 import ProfileScreen from './ProfileScreen';
+import {FontAwesome,Feather} from '@expo/vector-icons'
 import CameraScreen from './CameraScreen';
 
-class MaleShapeScreen extends React.Component {
+class ShapeScreen extends React.Component {
     static navigationOptions = {
       title: 'Select Your Shape',
     };
@@ -54,16 +55,17 @@ class MaleShapeScreen extends React.Component {
     }
   
     render() {
-      const {navigate} = this.props.navigation;
+      const {navigate} = this.props.navigation; 
       // console.log('test' , this.state.data) 
     return(
       <ScrollView>
       <ImageBackground
       source={require('../Image/bg.png')}
       style={styles.ImageBackgroundStyle}>
+
       <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigate('Camera')}>
-                <Card style={styles.cardStyle} >
+      <TouchableOpacity onPress={() => navigate('CameraTest')}>
+                <Card style={styles.cardStyle}>
                 </Card>
               </TouchableOpacity>
         {
@@ -87,13 +89,19 @@ class MaleShapeScreen extends React.Component {
     }
 }
 
-export default MaleShapeScreen
+export default ShapeScreen
 
 const styles = StyleSheet.create({
   ImageBackgroundStyle: {
+      flex:1,
       width: '100%',
-      marginTop: 0,
-      height: 6000
+      height: '700%',
+  },
+  header:{
+      fontSize: 23,
+      textAlign:'center',
+      color:'#949494',
+      marginTop: 50
   },
   container: {
       flex: 1,
@@ -102,7 +110,11 @@ const styles = StyleSheet.create({
       backgroundColor: '#FFFFFF',
       borderRadius: 10,
       flexDirection: 'row',
-      flexWrap:'wrap'
+      flexWrap:'wrap',
+      width: '95%',
+      height:'auto',
+      alignItems: 'center'
+      
   },
 }
 );

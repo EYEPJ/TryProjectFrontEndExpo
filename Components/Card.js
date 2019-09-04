@@ -23,8 +23,9 @@ const Container = styled.View`
 	width: 150px;
 	border-radius: 14px;
 	border: 1px solid #E9E9E9;
-	margin: 18px;
-	margin-top: 20px;
+	margin:18px;
+	margin-top: 25px;
+	margin-bottom: 25px;
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 
 `;
@@ -43,6 +44,5 @@ const Image = styled.Image`
 const Content = styled.Text`
 	color: #ACACAC;
 	font-size: 15px;
-	font-weight: 600;
 	text-align: center;
 `;

@@ -67,10 +67,14 @@ class SkinColorScreen extends Component {
                 <TouchableOpacity onPress={() => this.setUserinfo(v.id)}>
                   <View
                     style={{
-                      width: 60,
-                      height: 60,
+                      
+                      width: 50,
+                      height: 50,
                       borderRadius: 50,
-                      margin: 20,
+                      marginRight:10,
+                      marginLeft:10,
+                      marginTop:10,
+                      marginBottom:10,
                       backgroundColor: v.skinColorCode
                     }}
                   />
@@ -87,13 +91,18 @@ class SkinColorScreen extends Component {
 const styles = StyleSheet.create({
   ImageBackgroundStyle: {
     width: "100%",
-    marginTop: 0,
     height: "200%"
   },
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 50,
+    marginTop: 20,
+    margin:10,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    flexDirection: 'row',
+    flexWrap:'wrap',
+    width: '95%',
+    height:'auto',
+    alignItems: 'center'
 
     
     

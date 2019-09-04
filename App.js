@@ -6,11 +6,11 @@ import SelectShapeOptionScreen from './Screen/SelectShapeOptionScreen';
 import ShapeScreen from './Screen/ShapeScreen';
 import SkinColorScreen from './Screen/SkinColorScreen';
 import CameraScreen from './Screen/CameraScreen';
-import AnalyzeShapeScreen from './Screen/AnalyzeShapeScreen';
+import TestScreen from './Screen/TestScreen';
+import CameraTest from './Screen/CameraTest';
 
 
 const MainNavigator = createStackNavigator({
-  AnalyzeShapeScreen: {screen: AnalyzeShapeScreen},
   Index: {screen: IndexScreen},
   Gender: {screen: SelectGenderScreen},
   Shape: {screen: SelectShapeOptionScreen},
@@ -18,6 +18,8 @@ const MainNavigator = createStackNavigator({
   Profile: {screen: ProfileScreen}, 
   SelectSkin: {screen: SkinColorScreen},
   Camera:{screen:CameraScreen},
+  Test:{screen:TestScreen},
+  CameraTest:{screen:CameraTest}
 });
 
 const App = createAppContainer(MainNavigator);

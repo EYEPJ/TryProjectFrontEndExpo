@@ -33,7 +33,7 @@ class Index extends React.Component {
       const {
         type,
         token,
-      } = await Facebook.logInWithReadPermissionsAsync('2859742107375302', {
+      } = await Facebook.logInWithReadPermissionsAsync('1302334243253331', {
         permissions: ['public_profile'],
       });
       if (type === 'success') {
@@ -165,7 +165,6 @@ text:{
     height: 25,
     width: 25,
     resizeMode: 'stretch',
-    
   },
   TextStyle: {
     color: '#fff',
