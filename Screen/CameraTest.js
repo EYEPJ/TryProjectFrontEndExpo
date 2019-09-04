@@ -2,61 +2,60 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-
+import * as firebase from 'firebase';
 
 export default class App extends React.Component {
+  static navigationOptions = {
+    title: 'Analize Your Shape By Picture',
+  }
   state = {
     image: null,
+    
   };
 
   componentDidMount(){
-      this.takePicture()
+    this.takePicture()
   }
 
-  selectPicture = async () => {
-    await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    const { cancelled, uri } = await ImagePicker.launchImageLibraryAsync({
-      aspect: 1,
-      allowsEditing: true,
-    });
-    if (!cancelled) this.setState({ image: uri });
-  };
 
   takePicture = async () => {
     await Permissions.askAsync(Permissions.CAMERA);
-    const { cancelled, uri } = await ImagePicker.launchCameraAsync({
+    const { uri } = await ImagePicker.launchCameraAsync({
       allowsEditing: false,
     });
-    if(uri!='')
-        this.setState({image: uri}) 
-        this.props.navigation.navigate('Test',{imageUri:this.state.image})
-      
+    if(uri!=''){
+      this.setState({ image: uri }); 
+      this.props.navigation.navigate('Profile',{imageUri:this.state.uri})
+    }
+    this.setState({ image: uri });
   };
+  uploadImage = async (uri, imageName) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    var ref = firebase.storage().ref().child("images/" + imageName);
+    return ref.put(blob);
+}
 
   render() {
     return (
+
       <View style={styles.container}>
         <Image style={styles.image} source={{ uri: this.state.image }} />
         <View style={styles.row}>
-          <Button onPress={this.takePicture}>Camera</Button>
         </View>
       </View>
     );
   }
 }
 
-const Button = ({ onPress, children }) => (
-  <TouchableOpacity style={styles.button} onPress={onPress}>
-    <Text style={styles.text}>{children}</Text>
-  </TouchableOpacity>
-);
 
 const styles = StyleSheet.create({
   text: {
     fontSize: 21,
   },
   row: { flexDirection: 'row' },
-  image: { width: 400, height: 700, backgroundColor: 'gray' },
+  image: { width: '100%', height: '100%', backgroundColor: 'gray' },
   button: {
     padding: 13,
     margin: 15,

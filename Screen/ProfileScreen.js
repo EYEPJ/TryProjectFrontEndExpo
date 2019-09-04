@@ -8,6 +8,9 @@ import Gestures from 'react-native-easy-gestures';
 
 
 export default class ProfileScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Clothes For Shape',
+  }
   constructor(props) {
     super(props);
     this.state = {   
@@ -20,11 +23,10 @@ export default class ProfileScreen extends React.Component {
         image:""
     };
   }
-
   componentDidMount(){
-    let recievImage = this.props.navigation.getParam('imageUri','non')
+    let receiveImage = this.props.navigation.getParam('imageUri','non')
     this.setState({
-      image: recievImage
+      image: receiveImage
     })
   }
 
@@ -63,10 +65,6 @@ export default class ProfileScreen extends React.Component {
                       this.ShowModalFunction(!this.state.ModalVisibleStatus)
                       this.setState({top_in: v.clothePictureUrl})
                     }}>
-                    
-                    <View style={styles.imageStyle}>
-                      <Image source={{uri:this.state.image}}/>
-                    </View>
                     <View style={styles.item} >
                       <Image style={{width: 80, height: 100}} source={{uri : v.clothePictureUrl}}></Image>
                     </View>
@@ -117,7 +115,7 @@ MainContainer :{
   marginTop: (Platform.OS == 'ios') ? 20 : 0
 },
 clothesBar: {
-  backgroundColor: 'pink',
+  backgroundColor: 'white',
   marginLeft: -19,
   marginTop: -30,
   height: '100%',
@@ -160,7 +158,7 @@ item: {
 },
 imageStyle:{
   width: '100%',
-  height: 250,
+  height:'250',
   alignItems: 'center'
 }
 });
