@@ -1,92 +1,84 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import { Camera } from 'expo-camera';
-import { Ionicons,Feather} from '@expo/vector-icons'
-import {Thumbnail } from  'native-base';
 import * as firebase from 'firebase';
-import ApiKeys from '../Screen/ApiKeys';
+import ApiKeys from './ApiKeys';
 
-export default class CameraExample extends React.Component {
+export default class App extends React.Component {
+  static navigationOptions = {
+    title: 'Analize Your Shape By Picture',
+  }
   constructor(prop){
     super(prop);
     this.state = {
-      hasCameraPermission: null,
-      type: Camera.Constants.Type.back,
-      formCam:null
+        image: null
     };
     if (!firebase.apps.length) { firebase.initializeApp(ApiKeys.FirebaseConfig); }
   }
-  
 
-  async componentDidMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
+  componentDidMount(){
+    this.takePicture()
   }
 
-  render() {
-    const { hasCameraPermission } = this.state;
-    if (hasCameraPermission === null) {
-      return <View />;
-    } else if (hasCameraPermission === false) {
-      return <Text>No access to camera</Text>;
-    } else {
-      return (
-        <View style={{ flex: 1 }}>
-          <Camera style={{ flex: 5 }} type={this.state.camType} ref={ref => this.camera = ref}>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-                flexDirection: 'row',
-              }}>
-              </View>
 
-              <View style={{
-                  position:'absolute',
-                  height:100,
-                  width:'100%',
-                  bottom : 0,
-                  flexDirection:'row',
-                  
-              }}>
-                </View>
-          </Camera>
-        
-                  <View style={{flex:1, justifyContent: 'center' ,alignItems:'center'}}>
-                    <Feather onPress={() => this.takephoto()} name="circle" size={70} color={'#fff'}/> 
-                  </View>
-                  
-              </View>
-
-      )
-    }
-    }
-    async takephoto(){
-        if(this.camera){
-            let photo = await this.camera.takePictureAsync();
-            /*if(photo.uri){
-              this.uploadImage(photo.uri,"Try").then(()=>{
-                firebase.storage().ref().child("images/" + "Try").getDownloadURL().then(function(URL){
-                    console.log(URL);
-                    
-                })
-                })
-            }*/
-            if(photo.uri!=''){
-              this.setState({formCam: photo.uri}) 
-              this.props.navigation.navigate('Profile',{imageUri:this.state.formCam})
-            }
+  takePicture = async () => {
+        let result  = await ImagePicker.launchCameraAsync({
+    });
+    if(result.uri){
+      let split =  result.uri.split("/")
+      let name  = split[split.length-1]
+      // console.log("this is log ",name,name.length,name[name.length-1]);
+        this.uploadImage(result.uri,name).then(()=>{
             
+            firebase.storage().ref().child("images/" + name).getDownloadURL().then(function(URL){
+           console.log(URL);
+               
+         })
+     
+    })
     }
-}
-    uploadImage = async (uri, imageName) => {
+    if(result.uri!=''){
+        this.setState({result: result.uri}) 
+        this.props.navigation.navigate('Profile',{imageUri:this.state.formCam})
+      }
+    this.setState({ image: result });
+  };
+  uploadImage = async (uri, imageName) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-
     var ref = firebase.storage().ref().child("images/" + imageName);
-    return ref.put(blob);
-}
+    return  ref.put(blob);
 }
 
-  
+  render() {
+    return (
+
+      <View style={styles.container}>
+        <Image style={styles.image} source={{ uri: this.state.result }} />
+        <View style={styles.row}>
+        </View>
+      </View>
+    );
+  }
+}
+
+
+const styles = StyleSheet.create({
+  text: {
+    fontSize: 21,
+  },
+  row: { flexDirection: 'row' },
+  image: { width: '100%', height: '100%', backgroundColor: 'gray' },
+  button: {
+    padding: 13,
+    margin: 15,
+    backgroundColor: '#dddddd',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
