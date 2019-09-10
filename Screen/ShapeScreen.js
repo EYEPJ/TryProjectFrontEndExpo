@@ -71,7 +71,7 @@ class ShapeScreen extends React.Component {
         {
           this.state.data.map((v,index) => {
             return (
-              <TouchableOpacity onPress={() => this.setUserinfo(v.id)}>
+              <TouchableOpacity key={index} onPress={() => this.setUserinfo(v.id)}>
                 <Card style={styles.cardStyle} 
                   key={index} picture={v.shapePictureUrl} name={v.shapeName}>
                 </Card>

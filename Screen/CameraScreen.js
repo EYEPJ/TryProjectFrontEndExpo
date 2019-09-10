@@ -6,6 +6,7 @@ import { Ionicons,Feather} from '@expo/vector-icons'
 import {Thumbnail } from  'native-base';
 import * as firebase from 'firebase';
 import ApiKeys from '../Screen/ApiKeys';
+// import console = require('console');
 
 export default class CameraExample extends React.Component {
   constructor(prop){
@@ -20,6 +21,7 @@ export default class CameraExample extends React.Component {
   
 
   async componentDidMount() {
+    console.log( 'firebase', firebase)
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ hasCameraPermission: status === 'granted' });
   }
@@ -65,14 +67,14 @@ export default class CameraExample extends React.Component {
     async takephoto(){
         if(this.camera){
             let photo = await this.camera.takePictureAsync();
-            /*if(photo.uri){
-              this.uploadImage(photo.uri,"Try").then(()=>{
-                firebase.storage().ref().child("images/" + "Try").getDownloadURL().then(function(URL){
-                    console.log(URL);
+            // if(photo.uri){
+            //   this.uploadImage(photo.uri,"Try").then(()=>{
+            //     firebase.storage().ref().child("images/" + "Try").getDownloadURL().then(function(URL){
+            //         console.log(URL);
                     
-                })
-                })
-            }*/
+            //     })
+            //     })
+            // }
             if(photo.uri!=''){
               this.setState({formCam: photo.uri}) 
               this.props.navigation.navigate('Profile',{imageUri:this.state.formCam})
