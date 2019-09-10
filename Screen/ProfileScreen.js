@@ -18,7 +18,7 @@ export default class ProfileScreen extends React.Component {
         clothes: [],
         top_in: "",
         top_out: "",
-        buttom: "",
+        bottom: "",
         shoe: "",
         image:""
     };
@@ -50,7 +50,6 @@ export default class ProfileScreen extends React.Component {
 
  render() {
    return (
-
       <View style={{flex: 1, flexDirection: 'row'}}>
         <Modal
           isVisible={this.state.ModalVisibleStatus}
@@ -88,7 +87,7 @@ export default class ProfileScreen extends React.Component {
           </TouchableOpacity>
 
           <Gestures rotatable={true} scalable={true}>
-            <Image source={{uri: this.state.top_in}} style={{width: '30%', height: '30%'}}/>
+            <Image source={{uri: this.state.top_in}} style={{width: 50, height: 50}}/>
           </Gestures>
           
           
@@ -109,12 +108,11 @@ export default class ProfileScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-
 MainContainer :{
-flex:1,
-justifyContent: 'center',
-alignItems: 'center',
-marginTop: (Platform.OS == 'ios') ? 20 : 0
+  flex:1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginTop: (Platform.OS == 'ios') ? 20 : 0
 },
 clothesBar: {
   backgroundColor: 'white',
@@ -156,6 +154,11 @@ item: {
   marginBottom:10, 
   marginLeft:10, 
   justifyContent: 'center',
+  alignItems: 'center'
+},
+imageStyle:{
+  width: '100%',
+  height:'250',
   alignItems: 'center'
 }
 });

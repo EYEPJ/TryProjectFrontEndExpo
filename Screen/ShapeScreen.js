@@ -34,7 +34,7 @@ class ShapeScreen extends React.Component {
   
     getShape = async () => {
       let resp
-      if(this.state.user.gender === 'เพศชาย'){
+      if(this.state.user.gender === 'male'){
         resp = await axios.get('http://3.92.192.76:8000/menShape/')
       }else{
         resp = await axios.get('http://3.92.192.76:8000/womanShape/')
@@ -45,6 +45,7 @@ class ShapeScreen extends React.Component {
         return value
       })
       console.log('test', data)
+      console.log(this.state.user)
       this.setState({ data })
     }
 

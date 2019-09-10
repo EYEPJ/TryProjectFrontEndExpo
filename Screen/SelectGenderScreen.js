@@ -12,6 +12,36 @@ class SelectGenderScreen extends React.Component {
   static navigationOptions = {
     title:'Select Your Gender'
   };
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      tempUser: this.props.navigation.state.params.user,
+      user:{
+
+      }
+    };
+  }
+
+  setGender = async (gender) => {
+    await this.setState(
+      {
+        user:{
+          fbId: this.state.tempUser.fbId,
+          name: this.state.tempUser.name,
+          profilePic: this.state.tempUser.profilePic,
+          gender: gender
+        }
+      }
+    )
+
+    this.props.navigation.navigate('SelectShape', {
+      user: this.state.user
+    });
+  }
+
+  
+
   render() {
     const {navigate} = this.props.navigation;
    return(
@@ -20,20 +50,16 @@ class SelectGenderScreen extends React.Component {
      <View style={styles.top}>
        </View>
        <View style={styles.styleButton}> 
-       <TouchableOpacity style={styles.genderContainer} onPress={() => navigate('SelectShape' , {
-            user: {
-              gender:'เพศหญิง'
-            }
-          })}>
+       <TouchableOpacity style={styles.genderContainer} onPress={() => {
+         this.setGender('female')
+       }}>
             <Image 
             source={require('../Image/female.png')}
             style={styles.imageStyle}/>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.genderContainer} onPress={() => navigate('SelectShape' , {
-            user: {
-              gender:'เพศชาย'
-            }
-          })}>
+        <TouchableOpacity style={styles.genderContainer} onPress={() => {
+         this.setGender('male')
+       }}>
             <Image
             source={require('../Image/male.png') }
             style={styles.imageStyle}/>

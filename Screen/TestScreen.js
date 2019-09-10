@@ -1,45 +1,50 @@
-import React from 'react';
-import { Button, View, Text, StyleSheet, TouchableOpacity, Platform, Image  } from 'react-native'
-import Modal from 'react-native-modal';
-import { ScrollView } from 'react-native-gesture-handler';
-import axios from 'axios';
-import { BlendShape } from 'expo/build/AR';
-import Gestures from 'react-native-easy-gestures';
-
-
-export default class TestScreen extends React.Component {
+import React from "react";
+import {
+  Button,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  Image
+} from "react-native";
+// let img = '';
+export default class ProfileScreen extends React.Component {
+  static navigationOptions = {
+    title: "Clothes For Shape"
+  };
   constructor(props) {
     super(props);
-    this.state = {   
-        image:""
+    this.state = {
+      image: ""
     };
   }
 
-  componentDidMount(){
-    let recievImage = this.props.navigation.getParam('imageUri','non')
-    this.setState({
-      image: recievImage
-    })
+ async componentWillMount() {
+    // let receiveImage = await this.props.navigation.getParam("imageUri","non");
+    // console.log(receiveImage);
   }
 
-  
- render() {
-   return (
-
-                    
-                    <View style={styles.imageStyle}>
-                      <Image source={{uri:this.state.image}}/>
-                    </View>
-   
-   );
- }
+  render() {
+    let receiveImage =  this.props.navigation.getParam("imageUri","non");
+    console.log(receiveImage);
+    
+    return (
+      <View style={styles.container}>
+        <Image
+          style={{ width: "100%", height: "100%" }}
+          source={{ uri: receiveImage ? receiveImage : '' }}
+        ></Image>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-
-imageStyle:{
-  width: '100%',
-  height:'250',
-  alignItems: 'center'
-}
+  container: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+    justifyContent: "center"
+  }
 });
