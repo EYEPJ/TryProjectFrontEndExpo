@@ -33,7 +33,7 @@ class Index extends React.Component {
       const {
         type,
         token,
-      } = await Facebook.logInWithReadPermissionsAsync('1302334243253331', {
+      } = await Facebook.logInWithReadPermissionsAsync('2859742107375302', {
         permissions: ['public_profile'],
       });
       if (type === 'success') {
@@ -92,7 +92,9 @@ class Index extends React.Component {
           <View style={styles.SeparatorLine} />
           <Text style={styles.TextStyle}> Login Using Facebook </Text>
         </TouchableOpacity>
-      <TouchableOpacity style={styles.GuestStyle} onPress={() => navigate('Gender')}>
+      <TouchableOpacity style={styles.GuestStyle} onPress={() => navigate('Gender', {
+        user: this.state.user
+      })}>
           <Text style={styles.TextGusetStyle}> Login With Guest Mode </Text>
         </TouchableOpacity>
         

@@ -36,6 +36,7 @@ class SelectGenderScreen extends React.Component {
    );
  }
 }
+ล
 
 export default SelectGenderScreen
 

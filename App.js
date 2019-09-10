@@ -7,7 +7,12 @@ import ShapeScreen from './Screen/ShapeScreen';
 import SkinColorScreen from './Screen/SkinColorScreen';
 import CameraScreen from './Screen/CameraScreen';
 import TestScreen from './Screen/TestScreen';
+<<<<<<< HEAD
 import CameraTest from './Screen/CameraTest';
+import AnalyzeShapeScreen from './Screen/AnalyzeShapeScreen';
+=======
+
+>>>>>>> master
 
 
 const MainNavigator = createStackNavigator({
