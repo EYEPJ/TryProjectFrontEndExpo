@@ -65,7 +65,7 @@ class ShapeScreen extends React.Component {
       style={styles.ImageBackgroundStyle}>
 
       <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigate('CameraTest')}>
+      <TouchableOpacity onPress={() => navigate('Camera')}>
                 <Card style={styles.cardStyle}>
                 </Card>
               </TouchableOpacity>

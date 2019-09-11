@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button ,ImageBackground} from 'react-native';
 import ShoulderPointA from '../Components/Point';
 import ShoulderPointB from '../Components/Point';
 import ChestPointA from '../Components/Point';
@@ -20,6 +20,7 @@ class MyClass extends Component {
         super(props);
 
         this.state = {
+            image: "",
             user: this.props.navigation.state.params.user,
             shoulderA: {
                 top: 0,
@@ -254,7 +255,14 @@ class MyClass extends Component {
     }
 
     render() {
+        let receiveImage =  this.props.navigation.getParam("imageUri","non");
+            console.log(receiveImage);
         return (
+            <ImageBackground
+            style={{ width: "100%", height: "100%" }}
+            source={{ uri: receiveImage ? receiveImage : '' }}
+          >
+
             <View>
             <Button title="Press Me" onPress={this.analyzeShape}/>
                 <View>
@@ -307,6 +315,7 @@ class MyClass extends Component {
                 <LegPointB pointPosition = {this.setLegB}></LegPointB>
                 
             </View>
+            </ImageBackground>
         );
     }
 }
