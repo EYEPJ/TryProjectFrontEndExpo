@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from '../Components/Card'
+import CameraCard from '../Components/CameraCard'
 import axios from 'axios'
 import {
  StyleSheet,
@@ -10,9 +11,8 @@ import {
  ImageBackground,
  ScrollView
 } from 'react-native';
-import ProfileScreen from './ProfileScreen';
 import {FontAwesome,Feather} from '@expo/vector-icons'
-import CameraScreen from './CameraScreen';
+
 
 class ShapeScreen extends React.Component {
     static navigationOptions = {
@@ -34,7 +34,7 @@ class ShapeScreen extends React.Component {
   
     getShape = async () => {
       let resp
-      if(this.state.user.gender === 'male'){
+      if(this.state.user.gender === 'เพศชาย'){
         resp = await axios.get('http://3.92.192.76:8000/menShape/')
       }else{
         resp = await axios.get('http://3.92.192.76:8000/womanShape/')
@@ -45,7 +45,6 @@ class ShapeScreen extends React.Component {
         return value
       })
       console.log('test', data)
-      console.log(this.state.user)
       this.setState({ data })
     }
 
@@ -65,9 +64,9 @@ class ShapeScreen extends React.Component {
       style={styles.ImageBackgroundStyle}>
 
       <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigate('Camera')}>
-                <Card style={styles.cardStyle}>
-                </Card>
+      <TouchableOpacity onPress={() => navigate('TestCamera')}>
+                <CameraCard style={styles.cardStyle}>
+                </CameraCard>
               </TouchableOpacity>
         {
           this.state.data.map((v,index) => {

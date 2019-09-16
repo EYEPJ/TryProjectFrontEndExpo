@@ -72,7 +72,7 @@ class SkinColorScreen extends Component {
                       height: 50,
                       borderRadius: 50,
                       marginRight:10,
-                      marginLeft:10,
+                      marginLeft:14,
                       marginTop:10,
                       marginBottom:10,
                       backgroundColor: v.skinColorCode
