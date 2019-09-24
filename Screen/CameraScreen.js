@@ -36,7 +36,6 @@ export default class App extends React.Component {
     }
   };
 
-
   uploadImage = async (uri, imageName) => {
     const response = await fetch(uri);
     const blob = await response.blob();
@@ -49,29 +48,9 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Image style={styles.image} source={{ uri: this.state.result }} />
-        <View style={styles.row}></View>
-      </View>
+      <View/>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 21
-  },
-  row: { flexDirection: "row" },
-  image: { width: "100%", height: "100%", backgroundColor: "gray" },
-  button: {
-    padding: 13,
-    margin: 15,
-    backgroundColor: "#dddddd"
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});
+

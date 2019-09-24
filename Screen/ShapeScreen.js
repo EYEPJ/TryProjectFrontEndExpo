@@ -64,7 +64,7 @@ class ShapeScreen extends React.Component {
       style={styles.ImageBackgroundStyle}>
 
       <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigate('TestCamera')}>
+      <TouchableOpacity onPress={() => navigate('Camera')}>
                 <CameraCard style={styles.cardStyle}>
                 </CameraCard>
               </TouchableOpacity>
@@ -79,9 +79,8 @@ class ShapeScreen extends React.Component {
             )
           })
         }
-
+      
       </View>
-        
         </ImageBackground>
         </ScrollView>
 
