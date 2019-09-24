@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 
-class SelectGenderScreen extends React.Component {
+class GenderScreen extends React.Component {
   static navigationOptions = {
     title:'Select Your Gender'
   };
@@ -16,29 +16,33 @@ class SelectGenderScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tempUser: this.props.navigation.state.params.user,
-      user:{
-
-      }
+      user: this.props.navigation.state.params.user,
     };
   }
 
   setGender = async (gender) => {
-    await this.setState(
-      {
-        user:{
-          fbId: this.state.tempUser.fbId,
-          name: this.state.tempUser.name,
-          profilePic: this.state.tempUser.profilePic,
-          gender: gender
-        }
-      }
-    )
+    this.state.user.gender = gender
 
     this.props.navigation.navigate('SelectShape', {
-      user: this.state.user
-    });
+      user: this.state.user});
   }
+
+  // setGender = async (gender) => {
+  //   await this.setState(
+  //     {
+  //       user:{
+  //         fbId: this.state.tempUser.fbId,
+  //         name: this.state.tempUser.name,
+  //         profilePic: this.state.tempUser.profilePic,
+  //         gender: gender
+  //       }
+  //     }
+  //   )
+
+  //   this.props.navigation.navigate('SelectShape', {
+  //     user: this.state.user
+  //   });
+  // }
 
   
 
@@ -70,7 +74,7 @@ class SelectGenderScreen extends React.Component {
  }
 }
 
-export default SelectGenderScreen
+export default GenderScreen
 
 const styles = StyleSheet.create({
   Container: {

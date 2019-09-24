@@ -1,20 +1,17 @@
 import {createStackNavigator, createAppContainer} from 'react-navigation';
-import ProfileScreen from './Screen/ProfileScreen' ;
-import SelectGenderScreen from './Screen/SelectGenderScreen';
-import IndexScreen from './Screen/IndexScreen';
-import SelectShapeOptionScreen from './Screen/SelectShapeOptionScreen';
+import MainScreen from './Screen/MainScreen' ;
+import GenderScreen from './Screen/GenderScreen';
+import LogInScreen from './Screen/LogInScreen';
 import ShapeScreen from './Screen/ShapeScreen';
 import SkinColorScreen from './Screen/SkinColorScreen';
 import CameraScreen from './Screen/CameraScreen';
 import AnalyzeShapeScreen from './Screen/AnalyzeShapeScreen';
 
 const MainNavigator = createStackNavigator({
-  Index: {screen: IndexScreen},
-  Gender: {screen: SelectGenderScreen},
-  Shape: {screen: SelectShapeOptionScreen},
+  LogInScreen: {screen: LogInScreen},
+  SelectGender: {screen: GenderScreen},
   SelectShape: {screen: ShapeScreen},
-  Profile: {screen: ProfileScreen}, 
-  SelectSkin: {screen: SkinColorScreen},
+  MainScreen: {screen: MainScreen}, 
   Camera:{screen:CameraScreen},
   AnalyzeShapeScreen: {screen: AnalyzeShapeScreen},
 });

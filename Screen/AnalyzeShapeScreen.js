@@ -20,7 +20,6 @@ class MyClass extends Component {
         super(props);
 
         this.state = {
-            image: "",
             user: this.props.navigation.state.params.user,
             shoulderA: {
                 top: 0,
@@ -107,20 +106,32 @@ class MyClass extends Component {
 
 
     analyzeShape = () => {
-        axios.post('http://localhost:8000/analyzeShape/', {
+        axios.post('http://3.92.192.76:8000/analyzeShape/', {
             shoulder: this.state.shoulderB.leftPosition-this.state.shoulderA.leftPosition,
             chest: this.state.chestB.leftPosition-this.state.chestA.leftPosition,
             waist: this.state.waistB.leftPosition-this.state.waistA.leftPosition,
             hip: this.state.hipB.leftPosition-this.state.hipA.leftPosition,
             leg: this.state.legB.leftPosition-this.state.legA.leftPosition
         }).then(res => {
-            this.state.user.shape = res.data;
-            this.props.navigation.navigate('SelectSkin', {
-                user: this.state.user
-            });
-            console.log(this.state.user)
+            this.createUser(res.data);
         })
     }
+
+    createUser = (shapeId) => {
+        axios.post("http://3.92.192.76:8000/createUser/", {
+            fbId: this.state.user.fbId,
+            userName: this.state.user.name,
+            userProfile: this.state.user.profilePic,
+            userBodyPictureUrl: this.state.user.bodyPicture,
+            userGender: this.state.user.gender,
+            shapeId: shapeId,
+        }).then(
+            this.props.navigation.navigate('MainScreen', {
+                user: this.state.user
+            })
+        );
+        
+    };
 
     setShoulderA = (position) => {
         this.setState({
@@ -255,12 +266,10 @@ class MyClass extends Component {
     }
 
     render() {
-        let receiveImage =  this.props.navigation.getParam("imageUri","non");
-            console.log(receiveImage);
         return (
             <ImageBackground
             style={{ width: "100%", height: "100%" }}
-            source={{ uri: receiveImage ? receiveImage : '' }}
+            source={{ uri: this.state.user.bodyPicture}}
           >
 
             <View>

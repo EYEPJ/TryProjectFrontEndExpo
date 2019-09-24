@@ -30,8 +30,7 @@ class SkinColorScreen extends Component {
   };
 
   createUser = () => {
-    axios
-      .post("http://3.92.192.76:8000/createUser/", {
+    axios.post("http://3.92.192.76:8000/createUser/", {
         fbId: this.state.user.fbId,
         userName: this.state.user.name,
         userProfile: this.state.user.profilePic,

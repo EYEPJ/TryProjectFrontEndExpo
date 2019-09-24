@@ -23,18 +23,15 @@ class ShapeScreen extends React.Component {
       user: this.props.navigation.state.params.user
     }
     
-    setUserinfo = (shapeId) => {
-      console.log(shapeId)
+    setUserinfo = async (shapeId,shapePictureUrl) => {
       this.state.user.shape = shapeId;
-      this.props.navigation.navigate('SelectSkin', {
-        user: this.state.user
-      });
-      console.log(this.state.user)
+      await this.createUser(shapePictureUrl);
+      this.props.navigation.navigate('MainScreen');
     }
   
     getShape = async () => {
       let resp
-      if(this.state.user.gender === 'เพศชาย'){
+      if(this.state.user.gender === 'male'){
         resp = await axios.get('http://3.92.192.76:8000/menShape/')
       }else{
         resp = await axios.get('http://3.92.192.76:8000/womanShape/')
@@ -47,6 +44,21 @@ class ShapeScreen extends React.Component {
       console.log('test', data)
       this.setState({ data })
     }
+
+    createUser = (shapePictureUrl) => {
+      axios.post("http://3.92.192.76:8000/createUser/", {
+          fbId: this.state.user.fbId,
+          userName: this.state.user.name,
+          userProfile: this.state.user.profilePic,
+          userBodyPictureUrl: shapePictureUrl,
+          userGender: this.state.user.gender,
+          shapeId: this.state.user.shape,
+      })
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+        });
+    };
 
 
     componentDidMount () {
@@ -64,14 +76,16 @@ class ShapeScreen extends React.Component {
       style={styles.ImageBackgroundStyle}>
 
       <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigate('Camera')}>
+      <TouchableOpacity onPress={() => navigate('Camera', {
+        user: this.state.user
+      })}>
                 <CameraCard style={styles.cardStyle}>
                 </CameraCard>
               </TouchableOpacity>
         {
           this.state.data.map((v,index) => {
             return (
-              <TouchableOpacity key={index} onPress={() => this.setUserinfo(v.id)}>
+              <TouchableOpacity key={index} onPress={() => this.setUserinfo(v.id,v.shapePictureUrl)}>
                 <Card style={styles.cardStyle} 
                   key={index} picture={v.shapePictureUrl} name={v.shapeName}>
                 </Card>

@@ -13,7 +13,8 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       image: null,
-      url: null
+      url: null,
+      user: this.props.navigation.state.params.user
     };
     if (!firebase.apps.length) {
       firebase.initializeApp(ApiKeys.FirebaseConfig);
@@ -31,19 +32,19 @@ export default class App extends React.Component {
       let name = split[split.length - 1];
       await this.uploadImage(result.uri, name)
       let URL  = await firebase.storage().ref().child("images/" + name).getDownloadURL()
-      this.props.navigation.navigate("AnalyzeShapeScreen", { imageUri: URL });
-      
+      this.state.user.bodyPicture = URL;
+      this.props.navigation.navigate("AnalyzeShapeScreen", { user: this.state.user });
     }
   };
 
   uploadImage = async (uri, imageName) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-    var ref = firebase
+    var ref = await firebase
       .storage()
       .ref()
       .child("images/" + imageName);
-    return ref.put(blob);
+    return await ref.put(blob);
   };
 
   render() {
