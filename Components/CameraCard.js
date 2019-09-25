@@ -6,9 +6,9 @@ import styled from 'styled-components';
 const Card = props => {
 	return 	<Container>
 	
-    {/* <Image
+    <Image
         source={require('../Image/photo-camera.png')}>
-    </Image> */}
+    </Image>
 	<Content>
 		<Text>
             Analyze By Picture

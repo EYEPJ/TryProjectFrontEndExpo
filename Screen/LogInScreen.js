@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text,View,Alert,ImageBackground,StyleSheet,TouchableOpacity,Image} from 'react-native';
-import { Facebook } from 'expo';
+import * as Facebook from 'expo-facebook'
 import axios from 'axios';
 
 class LogInScreen extends React.Component {

@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button ,ImageBackground} from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import ShoulderPointA from '../Components/Point';
 import ShoulderPointB from '../Components/Point';
 import ChestPointA from '../Components/Point';
@@ -106,32 +106,16 @@ class MyClass extends Component {
 
 
     analyzeShape = () => {
-        axios.post('http://3.92.192.76:8000/analyzeShape/', {
+        axios.post('http://localhost:8000/analyzeShape/', {
             shoulder: this.state.shoulderB.leftPosition-this.state.shoulderA.leftPosition,
             chest: this.state.chestB.leftPosition-this.state.chestA.leftPosition,
             waist: this.state.waistB.leftPosition-this.state.waistA.leftPosition,
             hip: this.state.hipB.leftPosition-this.state.hipA.leftPosition,
             leg: this.state.legB.leftPosition-this.state.legA.leftPosition
         }).then(res => {
-            this.createUser(res.data);
+            console.log(res.data);
         })
     }
-
-    createUser = (shapeId) => {
-        axios.post("http://3.92.192.76:8000/createUser/", {
-            fbId: this.state.user.fbId,
-            userName: this.state.user.name,
-            userProfile: this.state.user.profilePic,
-            userBodyPictureUrl: this.state.user.bodyPicture,
-            userGender: this.state.user.gender,
-            shapeId: shapeId,
-        }).then(
-            this.props.navigation.navigate('MainScreen', {
-                user: this.state.user
-            })
-        );
-        
-    };
 
     setShoulderA = (position) => {
         this.setState({
@@ -267,13 +251,11 @@ class MyClass extends Component {
 
     render() {
         return (
-            <ImageBackground
-            style={{ width: "100%", height: "100%" }}
-            source={{ uri: this.state.user.bodyPicture}}
-          >
-
             <View>
-            <Button title="Press Me" onPress={this.analyzeShape}/>
+            <Button title="Press Me" onPress={() => {
+                this.analyzeShape
+
+                }}/>
                 <View>
                     <Svg height="100%" width="100%">
                         <Line x1={this.state.shoulderA.leftPosition} 
@@ -324,7 +306,6 @@ class MyClass extends Component {
                 <LegPointB pointPosition = {this.setLegB}></LegPointB>
                 
             </View>
-            </ImageBackground>
         );
     }
 }
