@@ -3,7 +3,6 @@ import MainScreen from './Screen/MainScreen' ;
 import GenderScreen from './Screen/GenderScreen';
 import LogInScreen from './Screen/LogInScreen';
 import ShapeScreen from './Screen/ShapeScreen';
-import SkinColorScreen from './Screen/SkinColorScreen';
 import CameraScreen from './Screen/CameraScreen';
 import AnalyzeShapeScreen from './Screen/AnalyzeShapeScreen';
 
