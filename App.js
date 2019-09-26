@@ -8,6 +8,7 @@ import CameraScreen from './Screen/CameraScreen';
 import AnalyzeShapeScreen from './Screen/AnalyzeShapeScreen';
 
 const MainNavigator = createStackNavigator({
+  //AnalyzeShapeScreen: {screen: AnalyzeShapeScreen},
   LogInScreen: {screen: LogInScreen},
   SelectGender: {screen: GenderScreen},
   SelectShape: {screen: ShapeScreen},

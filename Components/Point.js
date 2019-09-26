@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, PanResponder } from 'react-native'
+import { StyleSheet, Text, View, PanResponder, } from 'react-native'
 
 export default class App extends React.Component {
   state = {
@@ -10,6 +10,12 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
+    
+    this.setState({
+      top: this.props.top,
+      left: this.props.left,
+    })
+
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (e, gestureState) => {
         return true
@@ -45,13 +51,14 @@ export default class App extends React.Component {
   render() {
     const { top, left, topTransition, leftTransition } = this.state
     const style = {
-      top: top + topTransition,
-      left: left + leftTransition,
+      top: this.props.top,
+      left: this.props.left,
     }
+  
 
     return (
       <View {...this.panResponder.panHandlers} style={[styles.box, style]}>
-        <Text>Point</Text>
+        {/* <Image source={require('../Image/selectedButton.png')} ></Image> */}
       </View> 
     )
   }
@@ -60,10 +67,11 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   box: {
     position: 'absolute',
-    backgroundColor: 'salmon',
-    width: 50,
-    height: 50,
+    backgroundColor: '#FCB828',
+    width: 20,
+    height: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 100/2,
   },
 })

@@ -11,17 +11,56 @@ import {
  ImageBackground,
  ScrollView
 } from 'react-native';
-import {FontAwesome,Feather} from '@expo/vector-icons'
+import {FontAwesome,Feather} from '@expo/vector-icons';
+import * as firebase from "firebase";
+import ApiKeys from "../Screen/ApiKeys";
+import * as ImagePicker from "expo-image-picker";
+
 
 
 class ShapeScreen extends React.Component {
     static navigationOptions = {
       title: 'Select Your Shape',
     };
-    state = {
-      data: [],
-      user: this.props.navigation.state.params.user
+
+    constructor(props) {
+      super(props);
+      this.state = {
+        image: null,
+        url: null,
+        data: [],
+        user: this.props.navigation.state.params.user
+      };
+      if (!firebase.apps.length) {
+        firebase.initializeApp(ApiKeys.FirebaseConfig);
+      }
     }
+    
+
+    //Camera
+    takePicture = async () => {
+      let result = await ImagePicker.launchCameraAsync({});
+      if (result.uri) {
+        let split = result.uri.split("/");
+        let name = split[split.length - 1];
+        await this.uploadImage(result.uri, name)
+        let URL  = await firebase.storage().ref().child("images/" + name).getDownloadURL()
+        this.state.user.bodyPicture = URL;
+        this.props.navigation.navigate("AnalyzeShapeScreen", { user: this.state.user });
+      }
+    };
+  
+    uploadImage = async (uri, imageName) => {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      var ref = await firebase
+        .storage()
+        .ref()
+        .child("images/" + imageName);
+      return await ref.put(blob);
+    };
+
+    //
     
     setUserinfo = async (shapeId,shapePictureUrl) => {
       this.state.user.shape = shapeId;
@@ -76,9 +115,9 @@ class ShapeScreen extends React.Component {
       style={styles.ImageBackgroundStyle}>
 
       <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigate('Camera', {
-        user: this.state.user
-      })}>
+      <TouchableOpacity onPress={() => {
+        this.takePicture()
+      }}>
                 <CameraCard style={styles.cardStyle}>
                 </CameraCard>
               </TouchableOpacity>
