@@ -5,6 +5,7 @@ import LogInScreen from './Screen/LogInScreen';
 import ShapeScreen from './Screen/ShapeScreen';
 import CameraScreen from './Screen/CameraScreen';
 import AnalyzeShapeScreen from './Screen/AnalyzeShapeScreen';
+import FittingRoom from './Screen/FittingRoom'
 
 const MainNavigator = createStackNavigator({
   //AnalyzeShapeScreen: {screen: AnalyzeShapeScreen},
@@ -14,6 +15,7 @@ const MainNavigator = createStackNavigator({
   MainScreen: {screen: MainScreen}, 
   Camera:{screen:CameraScreen},
   AnalyzeShapeScreen: {screen: AnalyzeShapeScreen},
+  FittingRoomScreen: {screen: FittingRoom},
 });
 
 const App = createAppContainer(MainNavigator);

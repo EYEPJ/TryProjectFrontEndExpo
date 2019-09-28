@@ -37,10 +37,8 @@ class LogInScreen extends React.Component {
         permissions: ['public_profile'],
       });
       if (type === 'success') {
-        console.log('Test')
         const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,picture.type(large)`);
         const userInfo = await response.json();
-        console.log(userInfo)
         this.setState(
           {
             user:{
@@ -56,10 +54,10 @@ class LogInScreen extends React.Component {
         
         //checkVar = await this.checkUserIsExist('userInfo.id')
         //console.log(await this.checkUserIsExist('userInfo.id').result)
-        console.log(userInfo.id)
+        //console.log(this.state.user.fbId)
         if(await this.checkUserIsExist(userInfo.id)){
           this.props.navigation.navigate('MainScreen', {
-            user: this.state.user
+            fbId: this.state.user.fbId
           });
         } else{
           this.props.navigation.navigate('SelectGender', {

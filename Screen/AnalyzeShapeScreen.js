@@ -152,7 +152,7 @@ class MyClass extends Component {
             shapeId: shapeId,
         }).then(
             this.props.navigation.navigate('MainScreen', {
-                user: this.state.user
+                fbId: this.state.user.fbId
             })
         );
         
