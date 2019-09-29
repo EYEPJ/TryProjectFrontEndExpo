@@ -47,7 +47,7 @@ class LogInScreen extends React.Component {
               profilePic: userInfo.picture.data.url,
               gender: ' ',
               bodyPicture: ' ',
-              shapeId: ' '
+              shapeId: ' ',
             }
           }
         )
@@ -93,8 +93,14 @@ class LogInScreen extends React.Component {
           <View style={styles.SeparatorLine} />
           <Text style={styles.TextStyle}> Login Using Facebook </Text>
         </TouchableOpacity>
-      <TouchableOpacity style={styles.GuestStyle} onPress={() => navigate('Gender', {
-        user: this.state.user
+      <TouchableOpacity style={styles.GuestStyle} onPress={() => navigate('GuestGenderScreen', {
+            user:{
+              userName: "Guest Mode",
+              userProfile: "../Image/guestProfile.png",
+              userBodyPictureUrl: " ",
+              userGender: " ",
+              shapeId: " ",
+            }
       })}>
           <Text style={styles.TextGusetStyle}> Login With Guest Mode </Text>
         </TouchableOpacity>

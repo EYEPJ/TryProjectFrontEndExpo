@@ -49,9 +49,7 @@ export default class ProfileScreen extends React.Component {
 
         filterGenderStatus: 'All',
 
-        user: {
-
-        },
+        user: this.props.navigation.state.params.user,
 
         clothesBar:{
           top: Images.clothesBar.unSelectTop,
@@ -64,7 +62,6 @@ export default class ProfileScreen extends React.Component {
   async componentDidMount(){
     this.getAllEvent()
     this.getAllPlace()
-    await this.getUser(this.props.navigation.state.params.fbId)
     this.getShapeName()
   }
 
@@ -75,29 +72,6 @@ export default class ProfileScreen extends React.Component {
     this.setState({
       shapeName: resp.data.result,
     })
-  }
-
-  getUser = async (fbId) => {
-    resp = await axios.post('http://localhost:8000/getUser/', {
-      fbId: fbId
-    });
-
-    let user = await resp.data.map( value => {
-      return value
-    })
-
-    await this.setState({
-      user: {
-        fbId: user[0].fbId,
-        userName: user[0].userName,
-        userProfile: user[0].userProfile,
-        userBodyPictureUrl: user[0].userBodyPictureUrl,
-        userGender: user[0].userGender,
-        shapeId: user[0].shapeId,
-      }
-    })
-
-    console.log(this.state.user)
   }
 
   ShowModalFunction(visible) {
@@ -161,10 +135,10 @@ export default class ProfileScreen extends React.Component {
       {/* Nav Bar */}
 
         <View style={styles.navBar}>
-          <Image source={{uri: this.state.user.userProfile}} style={styles.profilePic}></Image>
+          <Image source={require('../Image/guestProfile.png')} style={styles.profilePic}></Image>
           <Text style={styles.userName}>{this.state.user.userName}</Text>
           <Text style={styles.shapeName}>Shape: {this.state.shapeName}</Text>
-          <TouchableOpacity onPress={() => {this.props.navigation.navigate('SelectShape',{
+          <TouchableOpacity onPress={() => {this.props.navigation.navigate('GuestShapeScreen',{
             user:{
               fbId: this.state.user.fbId,
               name: this.state.user.userName,
@@ -176,7 +150,7 @@ export default class ProfileScreen extends React.Component {
           })}} style={styles.analyze}>
             <Text style={{textAlign: 'center'}}>Analyze</Text>
           </TouchableOpacity>
-          <Text style={styles.save}>Saved</Text>
+         
           <TouchableOpacity onPress={() => {this.props.navigation.navigate('LogInScreen')}} style={styles.logOut}>
             <Text style={{textAlign: 'center'}}>Logout</Text>
           </TouchableOpacity>
@@ -671,16 +645,16 @@ analyze:{
   borderColor: '#E9E9E9',
   borderWidth: 1,
   borderRadius: 4,
-  width: '25%',
+  width: '35%',
   textAlign: 'center',
 },
 logOut:{
   position: "absolute",
   top: '70%',
-  left: '72%',
+  left: '57%',
   fontWeight: '100',
   borderColor: '#E9E9E9',
-  width: '25%',
+  width: '37%',
   textAlign: 'center',
   borderWidth: 1,
   borderRadius: 4,
@@ -691,7 +665,7 @@ save:{
   left: '46%',
   fontWeight: '100',
   borderColor: '#E9E9E9',
-  width: '25%',
+  width: '17%',
   textAlign: 'center',
   borderWidth: 1,
   borderRadius: 4,

@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import {FontAwesome,Feather} from '@expo/vector-icons';
 import * as firebase from "firebase";
-import ApiKeys from "../Screen/ApiKeys";
+import ApiKeys from "./ApiKeys";
 import * as ImagePicker from "expo-image-picker";
 
 
@@ -64,12 +64,15 @@ class ShapeScreen extends React.Component {
     
     setUserinfo = async (shapeId,shapePictureUrl) => {
       this.state.user.shapeId = shapeId;
-      this.createUser(shapePictureUrl);
+      this.state.user.userBodyPictureUrl = shapePictureUrl;
+      this.props.navigation.navigate('GuestMainScreen',{
+        user: this.state.user
+      });
     }
   
     getShape = async () => {
       let resp
-      if(this.state.user.gender === 'male'){
+      if(this.state.user.userGender === 'male'){
         resp = await axios.get('http://3.92.192.76:8000/menShape/')
       }else{
         resp = await axios.get('http://3.92.192.76:8000/womanShape/')
@@ -117,12 +120,6 @@ class ShapeScreen extends React.Component {
       style={styles.ImageBackgroundStyle}>
 
       <View style={styles.container}>
-      <TouchableOpacity onPress={() => {
-        this.takePicture()
-      }}>
-                <CameraCard style={styles.cardStyle}>
-                </CameraCard>
-              </TouchableOpacity>
         {
           this.state.data.map((v,index) => {
             return (
