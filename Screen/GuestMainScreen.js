@@ -66,7 +66,7 @@ export default class ProfileScreen extends React.Component {
   }
 
   getShapeName = async () => {
-    resp = await axios.post('http://localhost:8000/getShapeName/', {
+    resp = await axios.post('http://3.92.192.76:8000/getShapeName/', {
       shapeId: this.state.user.shapeId
     })
     this.setState({
@@ -82,7 +82,7 @@ export default class ProfileScreen extends React.Component {
   }
 
   getAllPlace = async () => {
-    resp = await axios.get('http://localhost:8000/getAllPlace/');
+    resp = await axios.get('http://3.92.192.76:8000/getAllPlace/');
     let places = await resp.data.map( value => {
       return value
     })
@@ -91,7 +91,7 @@ export default class ProfileScreen extends React.Component {
 
 
   getAllEvent = async () => {
-    resp = await axios.get('http://localhost:8000/getAllEvent/');
+    resp = await axios.get('http://3.92.192.76:8000/getAllEvent/');
     let events = await resp.data.map( value => {
       return value
     })
@@ -113,7 +113,7 @@ export default class ProfileScreen extends React.Component {
         })
       }
 
-      resp = await axios.post('http://localhost:8000/getClothesByCategory/',{
+      resp = await axios.post('http://3.92.192.76:8000/getClothesByCategory/',{
         categoryId: category,
         shapeId: this.state.filterShape,
         eventId: this.state.filterEvent,

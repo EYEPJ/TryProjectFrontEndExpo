@@ -131,7 +131,7 @@ class MyClass extends Component {
 
 
     analyzeShape = () => {
-        axios.post('http://localhost:8000/analyzeShape/', {
+        axios.post('http://3.92.192.76:8000/analyzeShape/', {
             shoulder: this.state.shoulderB.leftPosition-this.state.shoulderA.leftPosition,
             chest: this.state.chestB.leftPosition-this.state.chestA.leftPosition,
             waist: this.state.waistB.leftPosition-this.state.waistA.leftPosition,
