@@ -16,7 +16,20 @@ import axios from 'axios';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ShowAndHide from '../Components/ShowAndHide';
 import { LinearGradient } from 'expo-linear-gradient';
-import Images from '../Components/Images'
+import Images from '../Components/Images';
+import TouchableScale from 'react-native-touchable-scale';
+import {
+    BallIndicator,
+    BarIndicator,
+    DotIndicator,
+    MaterialIndicator,
+    PacmanIndicator,
+    PulseIndicator,
+    SkypeIndicator,
+    UIActivityIndicator,
+    WaveIndicator,
+  } from 'react-native-indicators';
+
 
 // create a component
 class MyClass extends Component {
@@ -29,6 +42,9 @@ class MyClass extends Component {
         super(props);
 
         this.state = {
+
+            loading: false,
+            useButton: true,
             
             user: this.props.navigation.state.params.user,
 
@@ -129,8 +145,16 @@ class MyClass extends Component {
         };
     }
 
+    checkUserIsExist = async (fbId) => {
+        resp = await axios.post('http://3.92.192.76:8000/checkUserIsExist/',{
+          fbId: fbId
+        });
+        return await resp.data.result
+        
+      }
 
-    analyzeShape = () => {
+    analyzeShape = async () => {
+        this.setState({loading: true, useButton:false})
         axios.post('http://3.92.192.76:8000/analyzeShape/', {
             shoulder: this.state.shoulderB.leftPosition-this.state.shoulderA.leftPosition,
             chest: this.state.chestB.leftPosition-this.state.chestA.leftPosition,
@@ -138,9 +162,28 @@ class MyClass extends Component {
             hip: this.state.hipB.leftPosition-this.state.hipA.leftPosition,
             leg: this.state.legB.leftPosition-this.state.legA.leftPosition,
             gender: this.state.user.gender
-        }).then(res => {
-            this.createUser(res.data);
+        }).then(async res => {
+            if(await this.checkUserIsExist(this.state.user.fbId)){
+                console.log('update')
+                this.updateBodyPicture()
+            }else{
+                console.log('first time')
+                this.createUser(res.data)
+            }
+            this.setState({loading: false, useButton:true})
         })
+    }
+
+    updateBodyPicture = () =>{
+        axios.post('http://3.92.192.76:8000/updateUserBodyPictureUrl/', {
+            fbId: this.state.user.fbId,
+            url: this.state.user.bodyPicture,
+        }).then(
+            this.props.navigation.navigate('MainScreen', {
+                fbId: this.state.user.fbId,
+                picture: this.props.navigation.state.params.picture
+            })
+        );
     }
 
     createUser = (shapeId) => {
@@ -296,19 +339,41 @@ class MyClass extends Component {
     render() {
         return (
             <View style={{flex: 1, flexDirection: 'column'}}>
-                
-                <View style={styles.navbar}>
-                    {/* <View style={styles.finishButton}> */}
-                    <TouchableOpacity onPress={() => this.analyzeShape()}>
-                        <Image source={require('../Image/doneButton.png')} style={styles.finishButton}></Image>
+            
+            <View style={{flex:0.55,  backgroundColor: '#EBEBEB'}}></View>
+        
+            <View style={{flex: 1, backgroundColor: '#EBEBEB', alignItems:'center', flexDirection:'row'}}>
+          
+                <View style={{flex: 1, top: '1.5%'}}>
+                    <TouchableOpacity onPress={() => {this.props.navigation.goBack()}} style={{left: '50%'}}>
+                        <Image source={require('../Image/backButton.png')} style={styles.backButton}/>
                     </TouchableOpacity>
-                    
-                    {/* </View> */}
                 </View>
+      
+                <View style={{flex: 10}}>
+                    <Text style={styles.headerText}>Analyze Your Body</Text>
+                </View>
+      
+                <View style={{flex: 1, top: '1.5%', left: '-20%'}}>
+                    {ShowAndHide(this.state.useButton)(
+                        <TouchableOpacity onPress={() => {this.analyzeShape()}} style={{}}>
+                            <Image source={require('../Image/yes.png')} style={styles.yesButton}/>
+                        </TouchableOpacity>
+                    )}
+
+                    {ShowAndHide(this.state.loading)(
+                        <UIActivityIndicator color='#5A5A5A' trackWidth='1' size={20}/>
+                    )}
+                    
+                </View>
+
+            </View>
+            
+                 
                
                
                 <View style={styles.pictureArea}>
-                    <ImageBackground source={{uri:this.state.user.bodyPicture}} style={{width: '100%', height: '100%'}}>
+                    <ImageBackground source={{uri:this.props.navigation.state.params.picture}} style={{width: '100%', height: '100%'}}>
                     {ShowAndHide(this.state.shoulderStatus)(
                         <View>
                             <View>
@@ -410,7 +475,7 @@ class MyClass extends Component {
                     <View style={{flex: 1, flexDirection: 'row'}}>
 
                         <View style={styles.analyzeBarGrid}>
-                            <TouchableOpacity onPress={() => {
+                            <TouchableScale onPress={() => {
                                 this.setState({
                                     shoulderStatus: true,
                                     chestStatus: false,
@@ -431,11 +496,11 @@ class MyClass extends Component {
                                     <Image source={this.state.button.shoulder}  style={styles.circle}></Image>
                                     <Text style={styles.buttonText}>Shoulder</Text>
                                 </View>
-                            </TouchableOpacity>
+                            </TouchableScale>
                         </View>
 
                         <View style={styles.analyzeBarGrid}>
-                            <TouchableOpacity onPress={() => {
+                            <TouchableScale onPress={() => {
                                 this.setState({
                                     shoulderStatus: false,
                                     chestStatus: true,
@@ -456,11 +521,11 @@ class MyClass extends Component {
                                     <Image source={this.state.button.chest}  style={styles.circle}></Image>
                                     <Text style={styles.buttonText}>Chest</Text>
                                 </View>
-                            </TouchableOpacity>
+                            </TouchableScale>
                         </View>
 
                         <View style={styles.analyzeBarGrid}>
-                            <TouchableOpacity onPress={() => {
+                            <TouchableScale onPress={() => {
                                 this.setState({
                                     shoulderStatus: false,
                                     chestStatus: false,
@@ -481,11 +546,11 @@ class MyClass extends Component {
                                     <Image source={this.state.button.waist}  style={styles.circle}></Image>
                                     <Text style={styles.buttonText}>Waist</Text>
                                 </View>
-                            </TouchableOpacity>
+                            </TouchableScale>
                         </View>
 
                         <View style={styles.analyzeBarGrid}>
-                            <TouchableOpacity onPress={() => {
+                            <TouchableScale onPress={() => {
                                 this.setState({
                                     shoulderStatus: false,
                                     chestStatus: false,
@@ -506,11 +571,11 @@ class MyClass extends Component {
                                     <Image source={this.state.button.hip}  style={styles.circle}></Image>
                                     <Text style={styles.buttonText}>Hip</Text>
                                 </View>
-                            </TouchableOpacity>
+                            </TouchableScale>
                         </View>
 
                         <View style={styles.analyzeBarGrid}>
-                            <TouchableOpacity onPress={() => {
+                            <TouchableScale onPress={() => {
                                 
                                 this.setState({
                                     shoulderStatus: false,
@@ -533,7 +598,7 @@ class MyClass extends Component {
                                     <Text style={styles.buttonText}>Leg</Text>
                                 </View>
                                 
-                            </TouchableOpacity>
+                            </TouchableScale>
                         </View>
                         
                     </View>
@@ -556,12 +621,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     pictureArea:{
-        flex: 7,
+        flex: 10,
         backgroundColor: '#EAEAEA'
     },
     analyzeBar:{
-        flex: 2,
-        backgroundColor: '#F3F3F3',
+        flex: 3,
+        backgroundColor: '#EBEBEB',
         flexWrap: 'wrap',
         flexDirection: 'row',
     },
@@ -589,13 +654,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         textAlignVertical: 'center',
         position: 'absolute',
-        color: '#E6E6E6',
+        color: '#ADADAD',
         fontSize: 11.5,
-        fontWeight: '300',
-        textShadowColor: 'rgba(0, 0, 0, 0.5)',
-        textShadowOffset: {width: -0.2, height: 0.2},
-        textShadowRadius: -2
-
+        fontWeight: '500',
     },
     toCenter:{
         flex: 1,
@@ -604,6 +665,20 @@ const styles = StyleSheet.create({
     },
     doneStyle:{
         color: 'blue'
+    },
+    headerText:{
+        fontSize: 17,
+        color:'#313131',
+        alignSelf: 'center',
+        top:'10%'
+    },
+    backButton:{
+        width:11.56,
+        height:17.44,
+    },
+    yesButton:{
+        width:18.91,
+        height:13.47,
     }
 });
 

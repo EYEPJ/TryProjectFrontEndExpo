@@ -18,15 +18,11 @@ const Card = props => {
 
 export default Card;
 const Container = styled.View`
-	background: #ffffff;
-	height: 200px;
+	background: #313131;
+	height: 210px;
 	width: 150px;
-	border-radius: 14px;
-	border: 1px solid #E9E9E9;
-	margin:18px;
-	margin-top: 25px;
-	margin-bottom: 25px;
-	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+	border-radius: 7px;
+	margin: 5px;
 
 `;
 
@@ -42,7 +38,7 @@ const Image = styled.Image`
 	
 `;
 const Content = styled.Text`
-	color: #ACACAC;
+	color: #F5F5F5;
 	font-size: 15px;
 	text-align: center;
 `;

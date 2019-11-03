@@ -9,19 +9,25 @@ import FittingRoom from './Screen/FittingRoom';
 import GuestGenderScreen from './Screen/GuestGenderScreen';
 import GuestShapeScreen from './Screen/GuestShapeScreen'
 import GuestMainScreen from './Screen/GuestMainScreen'
+import test from './Screen/test';
+import Camera from './Screen/Camera';
+import PictureConfirmScreen from './Screen/PictureConfirmScreen';
 
 const MainNavigator = createStackNavigator({
-  //AnalyzeShapeScreen: {screen: AnalyzeShapeScreen},
+  // test: {screen: test}
+  
   LogInScreen: {screen: LogInScreen},
   SelectGender: {screen: GenderScreen},
   SelectShape: {screen: ShapeScreen},
-  MainScreen: {screen: MainScreen}, 
-  Camera:{screen:CameraScreen},
+  Camera: {screen: Camera},
+  PictureConfirmScreen: {screen: PictureConfirmScreen},
   AnalyzeShapeScreen: {screen: AnalyzeShapeScreen},
-  FittingRoomScreen: {screen: FittingRoom},
-  GuestGenderScreen: {screen: GuestGenderScreen},
-  GuestShapeScreen: {screen: GuestShapeScreen},
-  GuestMainScreen: {screen:GuestMainScreen},
+  MainScreen: {screen: MainScreen}, 
+  // Camera:{screen:CameraScreen},
+  // FittingRoomScreen: {screen: FittingRoom},
+  // GuestGenderScreen: {screen: GuestGenderScreen},
+  // GuestShapeScreen: {screen: GuestShapeScreen},
+  // GuestMainScreen: {screen:GuestMainScreen},
 });
 
 const App = createAppContainer(MainNavigator);

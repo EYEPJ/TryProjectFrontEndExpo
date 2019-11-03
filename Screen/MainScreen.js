@@ -5,9 +5,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
 import { BlendShape } from 'expo/build/AR';
 import Gestures from 'react-native-easy-gestures';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import ShowAndHide from '../Components/ShowAndHide';
-import Images from '../Components/Images'
+import Images from '../Components/Images';
 
 
 export default class ProfileScreen extends React.Component {
@@ -17,6 +16,9 @@ export default class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {   
+
+        pictureBody: null,
+
         modalGender: false,
         modalPlace: false,
         modalEvent: false,
@@ -39,8 +41,8 @@ export default class ProfileScreen extends React.Component {
         shoesList: false,
 
         filterShape: '%',
-        filterEvent: 1,
-        filterPlace: 1,
+        filterEvent: '%',
+        filterPlace: '%',
         filterGender: '%',
 
 
@@ -58,15 +60,44 @@ export default class ProfileScreen extends React.Component {
           jacket: Images.clothesBar.unSelectJacket,
           bottom: Images.clothesBar.unSelectBottom,
           shoes: Images.clothesBar.unSelectShoes,
-        }
+        },
+
+        topStatus: false,
+        jacketStatus: false,
+        bottomStatus: false,
+        shoesStatus: false,
     };
   }
+
   async componentDidMount(){
     this.getAllEvent()
     this.getAllPlace()
     await this.getUser(this.props.navigation.state.params.fbId)
     this.getShapeName()
   }
+
+  // async componentDidUpdate(prevProps, prevState){
+  //   console.log('prev: '+ prevState.user.userBodyPictureUrl)
+  //   console.log('now: '+ this.state.user.userBodyPictureUrl)
+  //   // if(prevState.user.userName == this.state.user.userName){
+      
+  //   // }
+  // }
+
+  // shouldComponentUpdate(nextProps, nextState){
+  //   if(nextState.user.userBodyPictureUrl != this.state.user.userBodyPictureUrl){
+  //     console.log('next: '+ nextState.user.userBodyPictureUrl)
+  //     console.log('this: '+ this.state.user.userBodyPictureUrl)
+  //     return true
+  //   }
+  // }
+
+  // componentDidUpdate(){
+  //   this.getUser(this.props.navigation.state.params.fbId)
+  // }
+
+
+
 
   getShapeName = async () => {
     resp = await axios.post('http://3.92.192.76:8000/getShapeName/', {
@@ -107,6 +138,18 @@ export default class ProfileScreen extends React.Component {
     console.log(this.state.top_in)
   }
 
+  goToAnalyze = () =>{
+    this.props.navigation.navigate('SelectShape',{
+      user:{
+        fbId: this.state.user.fbId,
+        name: this.state.user.userName,
+        profilePic: this.state.user.userBodyPictureUrl,
+        gender: this.state.user.userGender,
+        bodyPicture: this.state.user.userBodyPictureUrl,
+        shapeId: this.state.user.shapeId,
+    }})
+  }
+
   getAllPlace = async () => {
     resp = await axios.get('http://3.92.192.76:8000/getAllPlace/');
     let places = await resp.data.map( value => {
@@ -126,9 +169,6 @@ export default class ProfileScreen extends React.Component {
 
 
   getAllClothes = async (category) => {
-
-      
-
       if(this.state.filterShapeStatus === true){
         this.setState({
           filterShape: this.state.user.shapeId
@@ -157,23 +197,15 @@ export default class ProfileScreen extends React.Component {
   render() {
     return (
       <View style={{flex: 1, flexDirection: 'column'}}>
-      
-      {/* Nav Bar */}
 
         <View style={styles.navBar}>
-          <Image source={{uri: this.state.user.userProfile}} style={styles.profilePic}></Image>
+          <Image source={{uri:this.state.user.userProfile}} style={styles.profilePic}></Image>
           <Text style={styles.userName}>{this.state.user.userName}</Text>
           <Text style={styles.shapeName}>Shape: {this.state.shapeName}</Text>
-          <TouchableOpacity onPress={() => {this.props.navigation.navigate('SelectShape',{
-            user:{
-              fbId: this.state.user.fbId,
-              name: this.state.user.userName,
-              profilePic: this.state.user.userBodyPictureUrl,
-              gender: this.state.user.userGender,
-              bodyPicture: this.state.user.userBodyPictureUrl,
-              shapeId: this.state.user.shapeId,
-            }
-          })}} style={styles.analyze}>
+          <TouchableOpacity onPress={() => {
+            this.goToAnalyze()
+          }} 
+            style={styles.analyze}>
             <Text style={{textAlign: 'center'}}>Analyze</Text>
           </TouchableOpacity>
           <Text style={styles.save}>Saved</Text>
@@ -182,15 +214,8 @@ export default class ProfileScreen extends React.Component {
           </TouchableOpacity>
         </View>
 
-      {/* End NavBar */}
 
-      {/* filter */}
-     
-
-
-
-
-      
+    
         <View style={{flex: 9, flexDirection: 'column'}}>
 
 
@@ -199,7 +224,7 @@ export default class ProfileScreen extends React.Component {
           this.setState({
             filterShapeStatus: !this.state.filterShapeStatus
           })
-          if(this.state.filterShapeStatus === false){
+          if(this.state.filterShapeStatus === true){
             this.setState({
               filterShapeShow: 'Your Shape!'
             })
@@ -243,90 +268,45 @@ export default class ProfileScreen extends React.Component {
         </TouchableOpacity>
       </View>
 
+        <View style={styles.pictureArea}>
+          <ImageBackground source={{uri:this.props.navigation.state.params.picture == null ? this.state.user.userBodyPictureUrl : this.props.navigation.state.params.picture}} style={{width: '100%', height: '100%'}}>
+        
+            
 
-      
-          <View style={styles.pictureArea}>
-          <ImageBackground source={{uri:this.state.user.userBodyPictureUrl}} style={{width: '100%', height: '100%'}}>
+            {ShowAndHide(this.state.shoesStatus)(
+              <Gestures rotatable={true} scalable={true}>
+                <Image source={{uri: this.state.shoes}} style={{width: 300, height: 300}}/>
+              </Gestures>
+            )}
 
-            <Gestures rotatable={true} scalable={true}>
-              <Image source={{uri: this.state.shoes}} style={{width: 300, height: 300, position: 'absolute', top:500, left:60}}/>
-            </Gestures>
+            {ShowAndHide(this.state.bottomStatus)(
+              <Gestures rotatable={true} scalable={true}>
+                <Image source={{uri: this.state.bottom}} style={{width: 300, height: 300}}/>
+              </Gestures>
+            )}
 
-            <Gestures rotatable={true} scalable={true}>
-              <Image source={{uri: this.state.bottom}} style={{width: 300, height: 300, position: 'absolute', top:300, left:60}}/>
-            </Gestures>
+            {ShowAndHide(this.state.topStatus)(
+              <Gestures rotatable={true} scalable={true}>
+                <Image source={{uri: this.state.top}} style={{width: 300, height: 300}}/>
+              </Gestures>
+            )}
 
-            <Gestures rotatable={true} scalable={true}>
-              <Image source={{uri: this.state.top}} style={{width: 300, height: 300, position: 'absolute', top:100, left:60}}/>
-            </Gestures>
 
-            <Gestures rotatable={true} scalable={true}>
-              <Image source={{uri: this.state.jacket}} style={{width: 300, height: 300, position: 'absolute', top:50, left:60}}/>
-            </Gestures>
-
-          {ShowAndHide(this.state.clothesListStatus)(
-            <View style={styles.clothesList}>
-              <ScrollView style={{backgroundColor: 'white'}}>
-                <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', marginLeft: 2, marginRight: 2, marginTop: 10}}>
-                  {
-                    this.state.clothes.map((v, index) => {
-                      return(
-                        <TouchableOpacity key={index} onPress={() => {
-                          this.setState({
-                            clothesListStatus: false,
-                            topList: false,
-                            bottomList: false,
-                            jacketList: false,
-                            shoesList: false,
-                          })
-                          if(v.categoryId === 3){
-                            this.setState({shoes: v.clothePictureUrl})
-                          }else if(v.categoryId === 5){
-                            this.setState({top: v.clothePictureUrl})
-                          }else if(v.categoryId === 7){
-                            this.setState({jacket: v.clothePictureUrl})
-                          }else if(v.categoryId === 8){
-                            this.setState({bottom: v.clothePictureUrl})
-                          }
-                        }}>
-                          <View style={styles.item}>
-                            <Image key={index} style={styles.imageStyle} source={{uri : v.clothePictureUrl}}/>
-                          </View>
-                        </TouchableOpacity>
-                      )
-                    })
-                  }
-                  </View>
-                </ScrollView>
-            </View>
-          )}
-
+            {ShowAndHide(this.state.jacketStatus)(
+              <Gestures rotatable={true} scalable={true}>
+                <Image source={{uri: this.state.jacket}} style={{width: 300, height: 300}}/>
+              </Gestures>
+            )}
           </ImageBackground>
           </View>
-
-          
-          
-
-
 
           <View style={styles.categoryBar}>
 
             <TouchableOpacity onPress={() => {
               this.getAllClothes(5)
-              if(this.state.topList === false){
-                this.setState({
+              this.setState({
                 clothesListStatus: true,
-                topList: true,
-                jacketList: false,
-                bottomList: false,
-                shoesList: false,
               })
-              }else{
-                this.setState({
-                clothesListStatus: false,
-                topList: false
-              })
-              }
             }}
               style={styles.eachCategory}>
                 <View style={styles.toCenter}>
@@ -338,21 +318,9 @@ export default class ProfileScreen extends React.Component {
             
             <TouchableOpacity onPress={() => {
               this.getAllClothes(7)
-              if(this.state.jacketList === false){
-                this.setState({
+              this.setState({
                 clothesListStatus: true,
-                topList: false,
-                jacketList: true,
-                bottomList: false,
-                shoesList: false,
-              })
-              }else{
-                this.setState({
-                clothesListStatus: false,
-                jacketList: false
-              })
-              }
-            }}
+              })}}
               style={styles.eachCategory}>
                 <View style={styles.toCenter}>
                 <Image source={this.state.clothesBar.jacket} style={styles.eachClothBar}></Image>
@@ -363,22 +331,9 @@ export default class ProfileScreen extends React.Component {
 
             <TouchableOpacity onPress={() => {
               this.getAllClothes(8)
-              if(this.state.bottomList === false){
-                this.setState({
+              this.setState({
                 clothesListStatus: true,
-                topList: false,
-                jacketList: false,
-                bottomList: true,
-                shoesList: false,
-              })
-              }else{
-                this.setState({
-                clothesListStatus: false,
-                bottomList: false
-              })
-              }
-            }
-            }
+              })}}
               style={styles.eachCategory}>
                 <View style={styles.toCenter}>
                 <Image source={this.state.clothesBar.bottom} style={styles.eachClothBar}></Image>
@@ -389,21 +344,10 @@ export default class ProfileScreen extends React.Component {
 
             <TouchableOpacity onPress={() => {
               this.getAllClothes(3)
-              if(this.state.shoesList === false){
-                this.setState({
+              this.componentDidMount
+              this.setState({
                 clothesListStatus: true,
-                topList: false,
-                jacketList: false,
-                bottomList: false,
-                shoesList: true,
-              })
-              }else{
-                this.setState({
-                clothesListStatus: false,
-                shoesList: false
-              })
-              }
-            }}
+              })}}
               style={styles.eachCategory}>
                 <View style={styles.toCenter}>
                 <Image source={this.state.clothesBar.shoes} style={styles.eachClothBar}></Image>
@@ -538,6 +482,61 @@ export default class ProfileScreen extends React.Component {
         </Modal>
 
 
+
+        <Modal
+          isVisible={this.state.clothesListStatus}
+          onBackdropPress={() => this.setState({ clothesListStatus: false })}
+          hasBackdrop={true}
+          style={{justifyContent: 'flex-end', alignItems: 'center', margin: 0}}>
+          <View style={{backgroundColor: 'white', width: '100%', height: 700, justifyContent: 'center', alignItems: 'center'}}>   
+            <ScrollView style={{backgroundColor: 'white', alignItems: 'center'}}>
+                <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap', marginTop: 10, alignItems: 'center'}}>
+                  {
+                    this.state.clothes.map((v, index) => {
+                      return(
+                        <TouchableOpacity key={index} onPress={() => {
+                          this.setState({
+                            clothesListStatus: false,
+                            topList: false,
+                            bottomList: false,
+                            jacketList: false,
+                            shoesList: false,
+                          })
+                          if(v.categoryId === 3){
+                            this.setState({
+                              shoes: v.clothePictureUrl,
+                              shoesStatus: true
+                            })
+                          }else if(v.categoryId === 5){
+                            this.setState({
+                              top: v.clothePictureUrl,
+                              topStatus: true
+                            })
+                          }else if(v.categoryId === 7){
+                            this.setState({
+                              jacket: v.clothePictureUrl,
+                              jacketStatus: true
+                            })
+                          }else if(v.categoryId === 8){
+                            this.setState({
+                              bottom: v.clothePictureUrl,
+                              bottomStatus: true
+                            })
+                          }
+                        }}>
+                          <View style={styles.item}>
+                            <Image key={index} style={styles.imageStyle} source={{uri : v.clothePictureUrl}}/>
+                          </View>
+                        </TouchableOpacity>
+                      )
+                    })
+                  }
+                  </View>
+                </ScrollView>
+          </View>
+        </Modal>
+
+
         {/* Modal End */}
         
       </View>
@@ -588,7 +587,7 @@ backgroundColor: 'white'
 },
 
 item: {
-  width: 110, 
+  width: 114, 
   height: 125, 
   backgroundColor:'#F5F5F5', 
   marginBottom:10, 

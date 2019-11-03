@@ -22,13 +22,13 @@ const Container = styled.View`
 	background: #ffffff;
 	height: 200px;
 	width: 150px;
-	border-radius: 14px;
+	border-radius: 7px;
 	border: 1px solid #E9E9E9;
 	margin:18px;
-	margin-top: 25px;
-	margin-bottom: 25px;
+	margin-top: 18px;
+	margin-bottom: 18px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-    border-style: dashed;
+    ${'' /* border-style: dashed; */}
 
 `;
 

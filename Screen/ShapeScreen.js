@@ -15,12 +15,26 @@ import {FontAwesome,Feather} from '@expo/vector-icons';
 import * as firebase from "firebase";
 import ApiKeys from "../Screen/ApiKeys";
 import * as ImagePicker from "expo-image-picker";
+import Draggable from 'react-native-draggable';
+import * as Animatable from "react-native-animatable";
+import {
+  BallIndicator,
+  BarIndicator,
+  DotIndicator,
+  MaterialIndicator,
+  PacmanIndicator,
+  PulseIndicator,
+  SkypeIndicator,
+  UIActivityIndicator,
+  WaveIndicator,
+} from 'react-native-indicators';
+import ShowAndHide from '../Components/ShowAndHide';
 
 
 
 class ShapeScreen extends React.Component {
     static navigationOptions = {
-      title: 'Select Your Shape',
+      header: null
     };
 
     constructor(props) {
@@ -29,7 +43,9 @@ class ShapeScreen extends React.Component {
         image: null,
         url: null,
         data: [],
-        user: this.props.navigation.state.params.user
+        user: this.props.navigation.state.params.user,
+        loading: false,
+        analyze: false,
       };
       if (!firebase.apps.length) {
         firebase.initializeApp(ApiKeys.FirebaseConfig);
@@ -37,8 +53,9 @@ class ShapeScreen extends React.Component {
     }
     
 
-    //Camera
+    Camera
     takePicture = async () => {
+      console.log('test')
       let result = await ImagePicker.launchCameraAsync({});
       if (result.uri) {
         let split = result.uri.split("/");
@@ -68,19 +85,23 @@ class ShapeScreen extends React.Component {
     }
   
     getShape = async () => {
+      this.setState({
+        loading: true
+      })
       let resp
       if(this.state.user.gender === 'male'){
         resp = await axios.get('http://3.92.192.76:8000/menShape/')
       }else{
         resp = await axios.get('http://3.92.192.76:8000/womanShape/')
-      }  
-      console.log('shape is serving....')
-      console.log(resp.data)
+      } 
       let data = resp.data.map(value => {
         return value
       })
-      console.log('test', data)
       this.setState({ data })
+      this.setState({
+        loading: false,
+        analyze: true
+      })
     }
 
     createUser(shapePictureUrl){
@@ -102,42 +123,81 @@ class ShapeScreen extends React.Component {
 
 
     componentDidMount () {
-       this.getShape()
-      console.log(this.state.user);
-
+      this.getShape()
     }
   
     render() {
       const {navigate} = this.props.navigation; 
       // console.log('test' , this.state.data) 
     return(
-      <ScrollView>
-      <ImageBackground
-      source={require('../Image/bg.png')}
-      style={styles.ImageBackgroundStyle}>
 
-      <View style={styles.container}>
-      <TouchableOpacity onPress={() => {
-        this.takePicture()
-      }}>
-                <CameraCard style={styles.cardStyle}>
-                </CameraCard>
-              </TouchableOpacity>
+
+      
+      <View style={{flex: 1, flexDirection: 'column'}}>
+          
+        <View style={{flex:0.55,  backgroundColor: '#EBEBEB'}}></View>
+        
+        <View style={{flex: 1.2, backgroundColor: '#EBEBEB', alignItems:'center', flexDirection:'row'}}>
+          
+          <View style={{flex: 1}}>
+            <TouchableOpacity onPress={() => {this.props.navigation.goBack()}} style={{left: '50%', top:'10%'}}>
+              <Image source={require('../Image/backButton.png')} style={styles.backButton}/>
+            </TouchableOpacity>
+          </View>
+      
+          <View style={{flex: 10}}>
+            <Text style={styles.headerText}>Select Your Shape</Text>
+          </View>
+      
+          <View style={{flex: 1}}>
+          
+          </View>
+
+        </View>
+
+        <View style={{flex: 15}}>
+
+
+              {ShowAndHide(this.state.analyze)(
+                <Draggable renderShape={null} x={'65%'} y={'70%'} pressDrag={() => {this.props.navigation.navigate('Camera',{
+                  user: this.state.user
+                })}}>
+                  <Image source={require('../Image/analyzeButton.png')} style={styles.analyzeButton}/>
+                </Draggable>
+            )}
+         
+          
+          <ScrollView style={styles.ImageBackgroundStyle}>
+
+            {ShowAndHide(this.state.loading)(
+              <View style={{top: '150%'}}>
+                <MaterialIndicator color='#EA4C56' trackWidth='2' size={50}/>
+              </View>
+            )}
+          
+            <View style={styles.container}>
+          
+          
         {
           this.state.data.map((v,index) => {
             return (
               <TouchableOpacity key={index} onPress={() => this.setUserinfo(v.id,v.shapePictureUrl)}>
-                <Card style={styles.cardStyle} 
-                  key={index} picture={v.shapePictureUrl} name={v.shapeName}>
-                </Card>
+                <Animatable.View animation="bounceIn">
+                  <Card
+                    key={index} picture={v.shapePictureUrl} name={v.shapeName}>
+                  </Card>
+                </Animatable.View>
               </TouchableOpacity>
             )
           })
         }
       
-      </View>
-        </ImageBackground>
+          </View>
+     
         </ScrollView>
+        </View>
+        </View>
+
 
         );
     }
@@ -147,9 +207,9 @@ export default ShapeScreen
 
 const styles = StyleSheet.create({
   ImageBackgroundStyle: {
-      flex:1,
-      width: '100%',
-      height: '700%',
+    backgroundColor: '#EBEBEB',
+    alignItems: 'center',
+
   },
   header:{
       fontSize: 23,
@@ -159,16 +219,34 @@ const styles = StyleSheet.create({
   },
   container: {
       flex: 1,
-      marginTop: 20,
-      margin:10,
-      backgroundColor: '#FFFFFF',
       borderRadius: 10,
       flexDirection: 'row',
       flexWrap:'wrap',
-      width: '95%',
-      height:'auto',
-      alignItems: 'center'
-      
+      width: '90%',
+      justifyContent: 'flex-between',
+      alignItems: 'flex-start',
   },
+  backButton:{
+    width:11.56,
+    height:17.44,
+   },
+   selectBodyShapeText:{
+     width: 216,
+     height: 20,
+     top: '70%',
+     left: '25%',
+     position: 'absolute',
+   },
+   analyzeButton:{
+    width: 153,
+    height: 153,
+    position: 'absolute',
+   },
+   headerText:{
+    fontSize: 17,
+    color:'#313131',
+    alignSelf: 'center',
+    top:'10%'
+   }
 }
 );

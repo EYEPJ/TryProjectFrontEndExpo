@@ -2,6 +2,20 @@ import React from 'react';
 import { Text,View,Alert,ImageBackground,StyleSheet,TouchableOpacity,Image} from 'react-native';
 import * as Facebook from 'expo-facebook'
 import axios from 'axios';
+import Bouncy from 'react-native-bouncy-touchable';
+import {
+  BallIndicator,
+  BarIndicator,
+  DotIndicator,
+  MaterialIndicator,
+  PacmanIndicator,
+  PulseIndicator,
+  SkypeIndicator,
+  UIActivityIndicator,
+  WaveIndicator,
+} from 'react-native-indicators';
+import ShowAndHide from '../Components/ShowAndHide';
+
 
 class LogInScreen extends React.Component {
 
@@ -16,6 +30,7 @@ class LogInScreen extends React.Component {
       user: {
 
       },
+      loading: false
     };
   }
 
@@ -25,8 +40,8 @@ class LogInScreen extends React.Component {
     });
     //console.log(resp.data)
     return await resp.data.result
-    
   }
+
 
   logIn = async () => {
     try {
@@ -37,6 +52,7 @@ class LogInScreen extends React.Component {
         permissions: ['public_profile'],
       });
       if (type === 'success') {
+        this.setState({loading: true})
         const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,picture.type(large)`);
         const userInfo = await response.json();
         this.setState(
@@ -67,33 +83,28 @@ class LogInScreen extends React.Component {
       } else {
         Alert.alert('Something is wrong !');
       }
+      this.setState({loading: false})
     } catch ({ message }) {
+      this.setState({loading: false})
       Alert.alert(`Facebook Login Error: ${message}`);
     }
   }
 
   render() {
     const {navigate} = this.props.navigation;
+    
     return (
-      <ImageBackground
-      source={require('../Image/loginscreen.png')}
-      style={styles.ImageBackgroundStyle}>
-      <View style={styles.container}>
-        <Text style={styles.logoStyles}> TRY </Text>
-        <View style = {styles.lineStyle} />
-        <Text style={styles.text}>Virtual Fitting Room</Text>
-      <View>
-      <TouchableOpacity style={styles.FacebookStyle} activeOpacity={0.5} onPress={this.logIn}>
-      <Image
-            source={{
-              uri:
-                'https://aboutreact.com/wp-content/uploads/2018/08/facebook.png.png',
-            }}
-            style={styles.ImageIconStyle}/>
-          <View style={styles.SeparatorLine} />
-          <Text style={styles.TextStyle}> Login Using Facebook </Text>
-        </TouchableOpacity>
-      <TouchableOpacity style={styles.GuestStyle} onPress={() => navigate('GuestGenderScreen', {
+
+      <ImageBackground source={require('../Image/loginBackground.png')} style={styles.ImageBackgroundStyle}>
+
+          
+
+          <Bouncy onPress={this.logIn} style={{top: '55%', alignItems: 'center'}}>
+            <Image source={require('../Image/loginWithFBButton.png')} style={{width: 230,  height: 45}}/>
+          </Bouncy>
+
+
+          <Bouncy onPress={() => navigate('GuestGenderScreen', {
             user:{
               userName: "Guest Mode",
               userProfile: "../Image/guestProfile.png",
@@ -101,13 +112,16 @@ class LogInScreen extends React.Component {
               userGender: " ",
               shapeId: " ",
             }
-      })}>
-          <Text style={styles.TextGusetStyle}> Login With Guest Mode </Text>
-        </TouchableOpacity>
-        
-      </View>
-      </View>
+          })} style={{top: '57%', alignItems: 'center'}}>
+            <Image source={require('../Image/loginWithGuest.png')} style={{width: 230,  height: 45}}/>
+          </Bouncy>
+
+          {ShowAndHide(this.state.loading)(
+            <MaterialIndicator color='#EA4C56' trackWidth='2' size={50}/>
+          )}
+          
       </ImageBackground> 
+
     );
   }
 }
