@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import Bouncy from 'react-native-bouncy-touchable';
 import { NavigationActions } from 'react-navigation';
+import TouchableScale from 'react-native-touchable-scale';
+import * as Animatable from "react-native-animatable";
 
 
 class GenderScreen extends React.Component {
@@ -75,21 +77,23 @@ class GenderScreen extends React.Component {
 
     <View style={styles.Container}>
       
-        <Bouncy style={styles.genderFemale} onPress={() => {
+        <TouchableScale style={styles.genderFemale} onPress={() => {
           this.setGender('female')
         }}>
-              <Image 
+              <Animatable.Image 
+              delay={500} useNativeDriver={true} animation="fadeIn"
               source={require('../Image/female.png')}
               style={styles.imageStyle}/>
-          </Bouncy>
+          </TouchableScale>
 
-          <Bouncy style={styles.genderMale} onPress={() => {
+          <TouchableScale style={styles.genderMale} onPress={() => {
           this.setGender('male')
         }}>
-              <Image
+              <Animatable.Image
+              delay={500} useNativeDriver={true} animation="fadeIn"
               source={require('../Image/male.png') }
               style={styles.imageStyle}/>
-              </Bouncy>
+          </TouchableScale>
         
       </View>
       </View>
@@ -160,10 +164,12 @@ const styles = StyleSheet.create({
     height:17.44,
    },
    headerText:{
-    fontSize: 17,
-    color:'#313131',
     alignSelf: 'center',
-    top:'10%'
+    top:'10%',
+    fontSize: 15,
+    fontWeight: 330,
+    letterSpacing: 0.5,
+    color: 'black',
    }
   
     

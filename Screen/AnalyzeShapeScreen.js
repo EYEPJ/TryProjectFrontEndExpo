@@ -28,7 +28,7 @@ import {
     SkypeIndicator,
     UIActivityIndicator,
     WaveIndicator,
-  } from 'react-native-indicators';
+} from 'react-native-indicators';
 
 
 // create a component
@@ -165,7 +165,7 @@ class MyClass extends Component {
         }).then(async res => {
             if(await this.checkUserIsExist(this.state.user.fbId)){
                 console.log('update')
-                this.updateBodyPicture()
+                this.updateBodyPicture(res.data)
             }else{
                 console.log('first time')
                 this.createUser(res.data)
@@ -174,10 +174,11 @@ class MyClass extends Component {
         })
     }
 
-    updateBodyPicture = () =>{
+    updateBodyPicture = (shapeId) =>{
         axios.post('http://3.92.192.76:8000/updateUserBodyPictureUrl/', {
             fbId: this.state.user.fbId,
             url: this.state.user.bodyPicture,
+            shapeId: shapeId,
         }).then(
             this.props.navigation.navigate('MainScreen', {
                 fbId: this.state.user.fbId,
@@ -196,7 +197,8 @@ class MyClass extends Component {
             shapeId: shapeId,
         }).then(
             this.props.navigation.navigate('MainScreen', {
-                fbId: this.state.user.fbId
+                fbId: this.state.user.fbId,
+                picture: this.props.navigation.state.params.picture
             })
         );
         
@@ -667,8 +669,10 @@ const styles = StyleSheet.create({
         color: 'blue'
     },
     headerText:{
-        fontSize: 17,
-        color:'#313131',
+        fontSize: 15,
+        fontWeight: 330,
+        letterSpacing: 0.5,
+        color: 'black',
         alignSelf: 'center',
         top:'10%'
     },

@@ -81,7 +81,20 @@ class ShapeScreen extends React.Component {
     
     setUserinfo = async (shapeId,shapePictureUrl) => {
       this.state.user.shapeId = shapeId;
-      this.createUser(shapePictureUrl);
+      if(await this.checkUserIsExist(this.state.user.fbId)){
+        axios.post('http://3.92.192.76:8000/updateUserBodyPictureUrl/', {
+          fbId: this.state.user.fbId,
+          url: shapePictureUrl,
+          shapeId: shapeId,
+        }).then(
+          this.props.navigation.navigate('MainScreen', {
+            fbId: this.state.user.fbId,
+            picture: shapePictureUrl
+        })
+      );
+      }else{
+        this.createUser(shapePictureUrl)
+      }
     }
   
     getShape = async () => {
@@ -104,6 +117,14 @@ class ShapeScreen extends React.Component {
       })
     }
 
+
+  checkUserIsExist = async (fbId) => {
+    resp = await axios.post('http://3.92.192.76:8000/checkUserIsExist/',{
+      fbId: fbId
+    });
+    return await resp.data.result 
+  }
+
     createUser(shapePictureUrl){
       axios.post("http://3.92.192.76:8000/createUser/", {
           fbId: this.state.user.fbId,
@@ -116,7 +137,8 @@ class ShapeScreen extends React.Component {
         .then(res => {
           console.log('test ja')
           this.props.navigation.navigate('MainScreen',{
-            fbId: this.state.user.fbId
+            fbId: this.state.user.fbId,
+            picture: shapePictureUrl,
           });
         });
     };
@@ -162,7 +184,7 @@ class ShapeScreen extends React.Component {
                 <Draggable renderShape={null} x={'65%'} y={'70%'} pressDrag={() => {this.props.navigation.navigate('Camera',{
                   user: this.state.user
                 })}}>
-                  <Image source={require('../Image/analyzeButton.png')} style={styles.analyzeButton}/>
+                  <Image source={require('../Image/analyze.png')} style={styles.analyzeButton}/>
                 </Draggable>
             )}
          
@@ -171,7 +193,7 @@ class ShapeScreen extends React.Component {
 
             {ShowAndHide(this.state.loading)(
               <View style={{top: '150%'}}>
-                <MaterialIndicator color='#EA4C56' trackWidth='2' size={50}/>
+                <MaterialIndicator color='black' trackWidth='2'/>
               </View>
             )}
           
@@ -212,10 +234,14 @@ const styles = StyleSheet.create({
 
   },
   header:{
-      fontSize: 23,
-      textAlign:'center',
-      color:'#949494',
-      marginTop: 50
+    fontSize: 15,
+    fontWeight: 330,
+    letterSpacing: 0.5,
+    color: 'black',
+    top: 3,
+    textAlign:'center',
+    marginTop: 50,
+    fontFamily: 'Cochin',
   },
   container: {
       flex: 1,
@@ -238,15 +264,17 @@ const styles = StyleSheet.create({
      position: 'absolute',
    },
    analyzeButton:{
-    width: 153,
-    height: 153,
+    width: 124.5,
+    height: 124.5,
     position: 'absolute',
    },
    headerText:{
-    fontSize: 17,
-    color:'#313131',
     alignSelf: 'center',
-    top:'10%'
+    top:'10%',
+    fontSize: 17,
+    fontWeight: 330,
+    letterSpacing: 0.5,
+    color: 'black',
    }
 }
 );

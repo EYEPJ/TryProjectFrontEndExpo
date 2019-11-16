@@ -50,9 +50,9 @@ export default class CameraExample extends React.Component {
       return (
         <View style={{ flex: 1 }}>
             <View style={{flex:0.5,  backgroundColor: '#EBEBEB'}}></View>
-            <View style={{ flex: 10 }}>
-                <Camera style={{ flex: 1}} type={this.state.type} ref={ref => {this.camera = ref;}}>
-                    <View style={{ flex: 1, backgroundColor: 'transparent'}}>
+            <View style={{ flex: 10, }}>
+                <Camera style={{ flex: 1, }} type={this.state.type} ref={ref => {this.camera = ref;}}>
+                    <View style={{ flex: 1, backgroundColor: 'transparent',}}>
                       <TouchableScale activeScale={0.95} onPress={() => {this.props.navigation.goBack()}} style={styles.close}>
                         <Image source={require('../Image/close.png')} style={styles.close}/>
                       </TouchableScale>
@@ -62,7 +62,7 @@ export default class CameraExample extends React.Component {
             </View>
             
 
-            <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center',}}>
+            <View style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
 
                 <Image source={require('../Image/takePicButtonOut.png')} style={styles.takePicButtonOut}></Image>
                 
