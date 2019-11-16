@@ -15,12 +15,26 @@ import {FontAwesome,Feather} from '@expo/vector-icons';
 import * as firebase from "firebase";
 import ApiKeys from "./ApiKeys";
 import * as ImagePicker from "expo-image-picker";
+import Draggable from 'react-native-draggable';
+import * as Animatable from "react-native-animatable";
+import {
+  BallIndicator,
+  BarIndicator,
+  DotIndicator,
+  MaterialIndicator,
+  PacmanIndicator,
+  PulseIndicator,
+  SkypeIndicator,
+  UIActivityIndicator,
+  WaveIndicator,
+} from 'react-native-indicators';
+import ShowAndHide from '../Components/ShowAndHide';
 
 
 
 class ShapeScreen extends React.Component {
     static navigationOptions = {
-      title: 'Select Your Shape',
+      header: null
     };
 
     constructor(props) {
@@ -29,7 +43,9 @@ class ShapeScreen extends React.Component {
         image: null,
         url: null,
         data: [],
-        user: this.props.navigation.state.params.user
+        user: this.props.navigation.state.params.user,
+        loading: false,
+        analyze: false,
       };
       if (!firebase.apps.length) {
         firebase.initializeApp(ApiKeys.FirebaseConfig);
@@ -37,8 +53,9 @@ class ShapeScreen extends React.Component {
     }
     
 
-    //Camera
+    Camera
     takePicture = async () => {
+      console.log('test')
       let result = await ImagePicker.launchCameraAsync({});
       if (result.uri) {
         let split = result.uri.split("/");
@@ -63,28 +80,40 @@ class ShapeScreen extends React.Component {
     //
     
     setUserinfo = async (shapeId,shapePictureUrl) => {
-      this.state.user.shapeId = shapeId;
-      this.state.user.userBodyPictureUrl = shapePictureUrl;
-      this.props.navigation.navigate('GuestMainScreen',{
-        user: this.state.user
-      });
+      this.setState({loading: true})
+      this.props.navigation.navigate('GuestMainScreen', {
+        picture: shapePictureUrl
+      })
+      this.setState({loading: false})
     }
   
     getShape = async () => {
+      this.setState({
+        loading: true
+      })
       let resp
-      if(this.state.user.userGender === 'male'){
+      if(this.state.user.gender === 'male'){
         resp = await axios.get('http://3.92.192.76:8000/menShape/')
       }else{
         resp = await axios.get('http://3.92.192.76:8000/womanShape/')
-      }  
-      console.log('shape is serving....')
-      console.log(resp.data)
+      } 
       let data = resp.data.map(value => {
         return value
       })
-      console.log('test', data)
       this.setState({ data })
+      this.setState({
+        loading: false,
+        analyze: true
+      })
     }
+
+
+  checkUserIsExist = async (fbId) => {
+    resp = await axios.post('http://3.92.192.76:8000/checkUserIsExist/',{
+      fbId: fbId
+    });
+    return await resp.data.result 
+  }
 
     createUser(shapePictureUrl){
       axios.post("http://3.92.192.76:8000/createUser/", {
@@ -97,44 +126,77 @@ class ShapeScreen extends React.Component {
       })
         .then(res => {
           console.log('test ja')
-          this.props.navigation.navigate('MainScreen',{
-            fbId: this.state.user.fbId
+          this.props.navigation.navigate('GuestMainScreen',{
+            fbId: this.state.user.fbId,
+            picture: shapePictureUrl,
           });
         });
     };
 
 
     componentDidMount () {
-       this.getShape()
-      console.log(this.state.user);
-
+      this.getShape()
     }
   
     render() {
       const {navigate} = this.props.navigation; 
       // console.log('test' , this.state.data) 
     return(
-      <ScrollView>
-      <ImageBackground
-      source={require('../Image/bg.png')}
-      style={styles.ImageBackgroundStyle}>
 
-      <View style={styles.container}>
-        {
-          this.state.data.map((v,index) => {
-            return (
-              <TouchableOpacity key={index} onPress={() => this.setUserinfo(v.id,v.shapePictureUrl)}>
-                <Card style={styles.cardStyle} 
-                  key={index} picture={v.shapePictureUrl} name={v.shapeName}>
-                </Card>
-              </TouchableOpacity>
-            )
-          })
-        }
+
       
+      <View style={{flex: 1, flexDirection: 'column'}}>
+          
+        <View style={{flex:0.55,  backgroundColor: '#EBEBEB'}}></View>
+        
+        <View style={{flex: 1.2, backgroundColor: '#EBEBEB', alignItems:'center', flexDirection:'row'}}>
+          
+          <View style={{flex: 1}}>
+            <TouchableOpacity onPress={() => {this.props.navigation.goBack()}} style={{left: '50%', top:'10%'}}>
+              <Image source={require('../Image/backButton.png')} style={styles.backButton}/>
+            </TouchableOpacity>
+          </View>
+      
+          <View style={{flex: 10}}>
+            <Text style={styles.headerText}>Select Your Shape</Text>
+          </View>
+      
+          <View style={{flex: 1}}>
+          
+          </View>
+
+        </View>
+
+        <View style={{flex: 15}}>
+               
+          <ScrollView style={styles.ImageBackgroundStyle}>
+            <View style={styles.container}>
+            
+
+            {
+              this.state.data.map((v,index) => {
+                return (
+                  <TouchableOpacity key={index} onPress={() => this.setUserinfo(v.id,v.shapePictureUrl)}>
+                    <Animatable.View animation="bounceIn">
+                      <Card
+                        key={index} picture={v.shapePictureUrl} name={v.shapeName}>
+                      </Card>
+                    </Animatable.View>
+                  </TouchableOpacity>
+                )
+              })
+            }
+            
+            </View>
+          </ScrollView>
+          {ShowAndHide(this.state.loading)(
+            <View style={{position: 'absolute', top: '40%', left: '45%'}}>
+              <MaterialIndicator color='black' trackWidth='2'/>
+            </View>
+          )}
+        </View>
       </View>
-        </ImageBackground>
-        </ScrollView>
+
 
         );
     }
@@ -144,28 +206,52 @@ export default ShapeScreen
 
 const styles = StyleSheet.create({
   ImageBackgroundStyle: {
-      flex:1,
-      width: '100%',
-      height: '700%',
+    backgroundColor: '#EBEBEB',
+    alignItems: 'center',
+
   },
   header:{
-      fontSize: 23,
-      textAlign:'center',
-      color:'#949494',
-      marginTop: 50
+    fontSize: 15,
+    fontWeight: 330,
+    letterSpacing: 0.5,
+    color: 'black',
+    top: 3,
+    textAlign:'center',
+    marginTop: 50,
+    fontFamily: 'Cochin',
   },
   container: {
       flex: 1,
-      marginTop: 20,
-      margin:10,
-      backgroundColor: '#FFFFFF',
       borderRadius: 10,
       flexDirection: 'row',
       flexWrap:'wrap',
-      width: '95%',
-      height:'auto',
-      alignItems: 'center'
-      
+      width: '90%',
+      justifyContent: 'flex-between',
+      alignItems: 'flex-start',
   },
+  backButton:{
+    width:11.56,
+    height:17.44,
+   },
+   selectBodyShapeText:{
+     width: 216,
+     height: 20,
+     top: '70%',
+     left: '25%',
+     position: 'absolute',
+   },
+   analyzeButton:{
+    width: 124.5,
+    height: 124.5,
+    position: 'absolute',
+   },
+   headerText:{
+    alignSelf: 'center',
+    top:'10%',
+    fontSize: 15,
+    fontWeight: 330,
+    letterSpacing: 0.5,
+    color: 'black',
+   }
 }
 );

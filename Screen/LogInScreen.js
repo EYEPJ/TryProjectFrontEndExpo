@@ -97,9 +97,9 @@ class LogInScreen extends React.Component {
     const {navigate} = this.props.navigation;
     
     return (
-        <Animatable.View delay={2000} useNativeDriver={true} animation="fadeIn" style={{flex: 1}}>
+        <Animatable.View delay={500} useNativeDriver={true} animation="fadeIn" style={{flex: 1}}>
 
-          <View style={{flex: 2, backgroundColor: 'red'}}>
+          <View style={{flex: 2}}>
             <Image source={require('../Image/IMG_1868.png')} style={{width: '100%', height: '100%',}}/>
           </View>
           

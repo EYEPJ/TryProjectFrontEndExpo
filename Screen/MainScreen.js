@@ -1273,7 +1273,7 @@ navBar:{
 },
 pictureArea:{
   flex: 10,
-  backgroundColor: 'black',
+  backgroundColor: '#EBEBEB',
   
 },
 hamburgerBar:{

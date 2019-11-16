@@ -6,11 +6,15 @@ import {
  TouchableOpacity,
  Image
 } from 'react-native';
+import Bouncy from 'react-native-bouncy-touchable';
+import { NavigationActions } from 'react-navigation';
+import TouchableScale from 'react-native-touchable-scale';
+import * as Animatable from "react-native-animatable";
 
 
 class GenderScreen extends React.Component {
   static navigationOptions = {
-    title:'Select Your Gender'
+    header: null
   };
   
   constructor(props) {
@@ -21,7 +25,8 @@ class GenderScreen extends React.Component {
   }
 
   setGender = async (gender) => {
-    this.state.user.userGender = gender
+    this.state.user.gender = gender
+
     this.props.navigation.navigate('GuestShapeScreen', {
       user: this.state.user});
   }
@@ -47,28 +52,51 @@ class GenderScreen extends React.Component {
 
   render() {
     const {navigate} = this.props.navigation;
+
+    
    return(
 
-     <View style={styles.Container}>
-     <View style={styles.top}>
-       </View>
-       <View style={styles.styleButton}> 
-       <TouchableOpacity style={styles.genderContainer} onPress={() => {
-         this.setGender('female')
-       }}>
-            <Image 
-            source={require('../Image/female.png')}
-            style={styles.imageStyle}/>
+    <View style={{flex:1, flexDirection:'column'}}>
+    <View style={{flex:0.55,  backgroundColor: '#EBEBEB'}}></View>
+    <View style={{flex: 1.2, backgroundColor: '#EBEBEB', alignItems:'center', flexDirection:'row'}}>
+      <View style={{flex: 1}}>
+        <TouchableOpacity onPress={() => {this.props.navigation.navigate('LogInScreen')}} style={{left: '50%', top:'10%'}}>
+          <Image source={require('../Image/backButton.png')} style={styles.backButton}/>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.genderContainer} onPress={() => {
-         this.setGender('male')
-       }}>
-            <Image
-            source={require('../Image/male.png') }
-            style={styles.imageStyle}/>
-            </TouchableOpacity>
-        </View>
-            </View>
+      </View>
+      <View style={{flex: 10}}>
+        <Text style={styles.headerText}>Select Your Gender</Text>
+      </View>
+      <View style={{flex: 1}}>
+        
+      </View>
+
+      
+      
+    </View>
+
+    <View style={styles.Container}>
+      
+        <TouchableScale style={styles.genderFemale} onPress={() => {
+          this.setGender('female')
+        }}>
+              <Animatable.Image 
+              delay={500} useNativeDriver={true} animation="fadeIn"
+              source={require('../Image/female.png')}
+              style={styles.imageStyle}/>
+          </TouchableScale>
+
+          <TouchableScale style={styles.genderMale} onPress={() => {
+          this.setGender('male')
+        }}>
+              <Animatable.Image
+              delay={500} useNativeDriver={true} animation="fadeIn"
+              source={require('../Image/male.png') }
+              style={styles.imageStyle}/>
+          </TouchableScale>
+        
+      </View>
+      </View>
    );
  }
 }
@@ -77,8 +105,11 @@ export default GenderScreen
 
 const styles = StyleSheet.create({
   Container: {
-    flex:1,
-    backgroundColor: '#F3F3F3'
+    flex:15,
+    flexDirection: 'row',
+    backgroundColor: '#EBEBEB',
+    justifyContent:'center',
+    alignItems:'center',
   },
   top:{
     alignItems:'center',
@@ -104,30 +135,42 @@ const styles = StyleSheet.create({
    alignItems:'center',
    marginTop:40
   },
- botton:{
+  botton:{
    width:200,
    backgroundColor:'#F9F9F9',
    borderRadius: 25,
    marginVertical:10,
    paddingVertical:12
-   },
-   imageStyle:{
-      width:'100%',
-      height:'100%',
-      borderRadius: 10,    
+  },
+  imageStyle:{
+    width: 135,
+    height: 185,
   },
   styleButton:{
     flex:1,
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems:'center',
  },
-  genderContainer:{
-   height:250,
-   width:170,
-   marginLeft:15,
-   marginRight:15
-   
-  }
+  genderFemale:{
+   marginRight:20,
+
+  },
+  genderMale:{
+    marginLeft:20,
+   },
+   backButton:{
+    width:11.56,
+    height:17.44,
+   },
+   headerText:{
+    alignSelf: 'center',
+    top:'10%',
+    fontSize: 15,
+    fontWeight: 330,
+    letterSpacing: 0.5,
+    color: 'black',
+   }
   
     
 

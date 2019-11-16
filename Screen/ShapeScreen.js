@@ -80,6 +80,7 @@ class ShapeScreen extends React.Component {
     //
     
     setUserinfo = async (shapeId,shapePictureUrl) => {
+      this.setState({loading: true})
       this.state.user.shapeId = shapeId;
       if(await this.checkUserIsExist(this.state.user.fbId)){
         axios.post('http://3.92.192.76:8000/updateUserBodyPictureUrl/', {
@@ -95,6 +96,7 @@ class ShapeScreen extends React.Component {
       }else{
         this.createUser(shapePictureUrl)
       }
+      this.setState({loading: false})
     }
   
     getShape = async () => {
@@ -178,47 +180,42 @@ class ShapeScreen extends React.Component {
         </View>
 
         <View style={{flex: 15}}>
-
-
-              {ShowAndHide(this.state.analyze)(
-                <Draggable renderShape={null} x={'65%'} y={'70%'} pressDrag={() => {this.props.navigation.navigate('Camera',{
-                  user: this.state.user
-                })}}>
-                  <Image source={require('../Image/analyze.png')} style={styles.analyzeButton}/>
-                </Draggable>
-            )}
+            
+          {ShowAndHide(this.state.analyze)(
+            <Draggable renderShape={null} x={'65%'} y={'70%'} pressDrag={() => {this.props.navigation.navigate('Camera',{
+              user: this.state.user
+            })}}>
+              <Image source={require('../Image/analyze.png')} style={styles.analyzeButton}/>
+            </Draggable>
+          )}
          
-          
           <ScrollView style={styles.ImageBackgroundStyle}>
-
-            {ShowAndHide(this.state.loading)(
-              <View style={{top: '150%'}}>
-                <MaterialIndicator color='black' trackWidth='2'/>
-              </View>
-            )}
-          
             <View style={styles.container}>
-          
-          
-        {
-          this.state.data.map((v,index) => {
-            return (
-              <TouchableOpacity key={index} onPress={() => this.setUserinfo(v.id,v.shapePictureUrl)}>
-                <Animatable.View animation="bounceIn">
-                  <Card
-                    key={index} picture={v.shapePictureUrl} name={v.shapeName}>
-                  </Card>
-                </Animatable.View>
-              </TouchableOpacity>
-            )
-          })
-        }
-      
-          </View>
-     
-        </ScrollView>
+            
+
+            {
+              this.state.data.map((v,index) => {
+                return (
+                  <TouchableOpacity key={index} onPress={() => this.setUserinfo(v.id,v.shapePictureUrl)}>
+                    <Animatable.View animation="bounceIn">
+                      <Card
+                        key={index} picture={v.shapePictureUrl} name={v.shapeName}>
+                      </Card>
+                    </Animatable.View>
+                  </TouchableOpacity>
+                )
+              })
+            }
+            
+            </View>
+          </ScrollView>
+          {ShowAndHide(this.state.loading)(
+            <View style={{position: 'absolute', top: '40%', left: '45%'}}>
+              <MaterialIndicator color='black' trackWidth='2'/>
+            </View>
+          )}
         </View>
-        </View>
+      </View>
 
 
         );
@@ -271,7 +268,7 @@ const styles = StyleSheet.create({
    headerText:{
     alignSelf: 'center',
     top:'10%',
-    fontSize: 17,
+    fontSize: 15,
     fontWeight: 330,
     letterSpacing: 0.5,
     color: 'black',

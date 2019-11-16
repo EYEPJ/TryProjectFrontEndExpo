@@ -6,12 +6,12 @@ import ShapeScreen from './Screen/ShapeScreen';
 import CameraScreen from './Screen/CameraScreen';
 import AnalyzeShapeScreen from './Screen/AnalyzeShapeScreen';
 import FittingRoom from './Screen/FittingRoom';
-import GuestGenderScreen from './Screen/GuestGenderScreen';
-import GuestShapeScreen from './Screen/GuestShapeScreen'
-import GuestMainScreen from './Screen/GuestMainScreen'
 import test from './Screen/test';
 import Camera from './Screen/Camera';
 import PictureConfirmScreen from './Screen/PictureConfirmScreen';
+import GuestGenderScreen from './Screen/GuestGenderScreen';
+import GuestMainScreen from './Screen/GuestMainScreen';
+import GuestShapeScreen from './Screen/GuestShapeScreen';
 
 const MainNavigator = createStackNavigator({
   // test: {screen: test}
@@ -25,9 +25,9 @@ const MainNavigator = createStackNavigator({
   MainScreen: {screen: MainScreen}, 
   // Camera:{screen:CameraScreen},
   // FittingRoomScreen: {screen: FittingRoom},
-  // GuestGenderScreen: {screen: GuestGenderScreen},
-  // GuestShapeScreen: {screen: GuestShapeScreen},
-  // GuestMainScreen: {screen:GuestMainScreen},
+  GuestGenderScreen: {screen: GuestGenderScreen},
+  GuestShapeScreen: {screen: GuestShapeScreen},
+  GuestMainScreen: {screen:GuestMainScreen},
 });
 
 const App = createAppContainer(MainNavigator);
